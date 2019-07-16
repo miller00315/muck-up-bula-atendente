@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="br.com.miller.farmaciaatendente">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".opinions.views.OpinionActivity" />
+        <activity android:name=".recoveryPassword.views.RecoveryPasswordActivity" />
+        <activity android:name=".saleManager.views.SalesManager" />
+        <activity android:name=".productManager.views.ProductMangerActivity" />
+        <activity
+            android:name=".mainMenu.views.activities.MainMenuAtivity"
+            android:label="@string/title_activity_main_menu_ativity" />
+        <activity android:name=".register.views.RegisterAcivity" />
+        <activity android:name=".login.view.Login" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
