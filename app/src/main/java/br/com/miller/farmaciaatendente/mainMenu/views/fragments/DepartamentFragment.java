@@ -1,83 +1,68 @@
 package br.com.miller.farmaciaatendente.mainMenu.views.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import br.com.miller.farmaciaatendente.R;
+import br.com.miller.farmaciaatendente.domain.Departament;
+import br.com.miller.farmaciaatendente.domain.User;
+import br.com.miller.farmaciaatendente.mainMenu.adapters.recyclersAdapters.RecyclerAdapterDepartament;
 import br.com.miller.farmaciaatendente.mainMenu.presenters.DepartamentPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.DepartamentTask;
+import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DepartamentFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DepartamentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class DepartamentFragment extends Fragment implements DepartamentTask.Presenter {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class DepartamentFragment extends Fragment implements DepartamentTask.Presenter, RecyclerItem.OnAdapterInteract {
     private OnFragmentInteractionListener mListener;
     private DepartamentPresenter departamentPresenter;
+    private User user;
+    private RecyclerAdapterDepartament recyclerAdapterDepartament;
+    private RecyclerView recyclerViewDepatament;
 
     public DepartamentFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DepartamentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DepartamentFragment newInstance(String param1, String param2) {
-        DepartamentFragment fragment = new DepartamentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            user = getArguments().getParcelable("user");
         }
 
+        recyclerAdapterDepartament = new RecyclerAdapterDepartament(this, getContext());
         departamentPresenter = new DepartamentPresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_departament, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_departament, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Bundle bundle) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(bundle);
-        }
+        recyclerViewDepatament = view.findViewById(R.id.recycler_view_departament);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        recyclerViewDepatament.setLayoutManager(linearLayoutManager);
+
+        recyclerViewDepatament.setAdapter(recyclerAdapterDepartament);
+
+        recyclerViewDepatament.setHasFixedSize(true);
+
+        if(!user.getStoreId().isEmpty())
+            departamentPresenter.getDepartaments(user.getCity(), user.getStoreId());
+        else
+            recyclerViewDepatament.setVisibility(View.INVISIBLE);
+
+        return view;
     }
 
     @Override
@@ -97,18 +82,26 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onAdapterInteract(Bundle bundle) {
+        mListener.onFragmentInteraction(bundle);
+    }
+
+    @Override
+    public void onDepartamentsSuccess(ArrayList<Departament> departaments) {
+
+        recyclerViewDepatament.setVisibility(View.VISIBLE);
+        recyclerAdapterDepartament.setDepartaments(departaments);
+
+    }
+
+    @Override
+    public void onDepartamentsFailed() {
+        recyclerViewDepatament.setVisibility(View.INVISIBLE);
+    }
+
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Bundle bundle);
     }
 }

@@ -2,9 +2,18 @@ package br.com.miller.farmaciaatendente.recoveryPassword.tasks;
 
 public interface RecoveryPasswordTasks {
 
-    interface View{}
+    interface View{
+        void resetPassword(String email);
+    }
 
-    interface Presenter {}
+    interface Presenter {
+        void emailEmpty();
+        void onRecoverySuccess();
+        void onRecoveryFailed(Exception e);
+    }
 
-    interface Model{}
+    interface Model{
+        void onRecoverySuccess();
+        void onRecoveryFailed(Exception e);
+    }
 }

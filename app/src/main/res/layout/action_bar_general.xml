@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/action_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <android.support.v7.widget.Toolbar
+        app:titleMarginStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:id="@+id/toolbar"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+</android.support.design.widget.AppBarLayout>

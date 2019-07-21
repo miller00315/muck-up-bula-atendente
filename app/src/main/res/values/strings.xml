@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Farmacia Atendente</string>
+    <string name="app_name">Bula Atendente</string>
     <string name="title_activity_main_menu_ativity">MainMenuAtivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -7,4 +7,46 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Email</string>
+    <string name="esqueci_minha_senha">Esqueci minha senha</string>
+    <string name="cadastre_se">Cadastre-se</string>
+    <string name="entrar">Entrar</string>
+    <string name="insira_seu_email_aqui">Insira seu email aqui</string>
+    <string name="recuperar_senha">Recuperar senha</string>
+    <string name="aqui_voc_pode_recuperar_a_senha_do_seu_usu_rio">Aqui você pode recuperar a senha do seu usuário.</string>
+
+    <string name="sobrenome">Sobrenome</string>
+    <string name="data_nascimento">Data nascimento</string>
+    <string name="telefone">Telefone</string>
+    <string name="repita_a_senha">Repita a senha</string>
+    <string name="toque_na_imagem_para_altera_la">Toque na imagem para altera-la</string>
+    <string name="novos">Novos</string>
+    <string name="enviados">Enviados</string>
+    <string name="entregues">Entregues</string>
+    <string name="pedidos">Pedidos</string>
+    <string name="departamentos">Departamentos</string>
+    <string name="perfil">Perfil</string>
+    <string name="senha">Senha</string>
+    <string name="gerenciar_vendas">Gerenciar vendas</string>
+    <string name="sair">Sair</string>
+    <string name="fale_conosco">Fale conosco</string>
+    <string name="endereco">Endereço</string>
+    <string name="minha_loja">Minha Loja</string>
+    <string name="atualizar_foto">Atualizar foto</string>
+    <string name="nome">Nome</string>
+    <string name="imagem_obtida_da_memoria">Imagem obtida da memoria</string>
+    <string name="perfil_pessoal">Perfil pessoal</string>
+    <string name="perfil_loja">Perfil Loja</string>
+    <string name="descricao">Descrição</string>
+    <string name="cidade">Cidade</string>
+    <string name="horario_de_funcionamento">Horário de funcionamento</string>
+    <string name="menu_departamento">Menu departamento</string>
+    <string name="nome_cliente">Nome cliente</string>
+    <string name="observacoes">Observações</string>
+    <string name="modo_pagamento">Modo Pagamento</string>
+    <string name="marcar_com_enviado">Marcar com enviado</string>
+    <string name="cancelar_venda">Cancelar venda</string>
+    <string name="produtos">Produtos</string>
+    <string name="preco_total_dos_produtos">Preço total dos produtos</string>
+    <string name="marcar_como_recebido">Marcar como recebido</string>
 </resources>
