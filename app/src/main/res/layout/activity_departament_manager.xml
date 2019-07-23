@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".mainMenu.views.fragments.DepartamentFragment">
+    android:gravity="center"
+    tools:context=".departamentManager.view.DepartamentManager">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_departament"
-        tools:listitem="@layout/view_holder_departament"
+    <include layout="@layout/action_bar_general"/>
+
+    <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_departament_manager"
+            tools:listitem="@layout/view_holder_offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button"
+        android:onClick="addMedicine"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="40dp"
@@ -22,6 +34,5 @@
         android:src="@drawable/ic_add_white_24dp"
         android:layout_width="100dp"
         android:layout_height="100dp" />
-
 
 </RelativeLayout>

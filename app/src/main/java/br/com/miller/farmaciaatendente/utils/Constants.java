@@ -17,6 +17,7 @@ public final class Constants {
     public static final String STORE_ID = "store_id";
     public static final int START_CODE = 1222;
     public static final int INTERNAL_IMAGE = 1223;
+    public static final int MEDICINE_MANAGER = 9999;
 
     public static class CartEntries implements BaseColumns {
 

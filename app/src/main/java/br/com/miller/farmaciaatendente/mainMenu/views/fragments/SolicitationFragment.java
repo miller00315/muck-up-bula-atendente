@@ -31,12 +31,9 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     private RecyclerAdapterSolicitations recyclerAdapterSolicitations;
     private Button managerBuy;
     private RecyclerView recyclerView;
-    public static final int ID = 225;
     private User user;
 
-    public SolicitationFragment() {
-        // Required empty public constructor
-    }
+    public SolicitationFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

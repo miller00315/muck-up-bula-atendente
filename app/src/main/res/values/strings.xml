@@ -49,4 +49,25 @@
     <string name="produtos">Produtos</string>
     <string name="preco_total_dos_produtos">Preço total dos produtos</string>
     <string name="marcar_como_recebido">Marcar como recebido</string>
+    <string name="cancelados">Cancelados</string>
+    <string name="nome_departamento">Nome departamento</string>
+    <string name="indicacao">Indicação</string>
+    <string name="contra_indicacao">Contra indicação</string>
+    <string name="nome_do_medicamento">Nome do medicamento</string>
+    <string name="dores_em_geral_febre">Dores em geral, febre</string>
+    <string name="suspeita_de_dengue">Suspeita de dengue</string>
+    <string name="cx_10_comprimidos_solucao_gotas_10ml">Cx. 10 comprimidos</string>
+    <string name="r_10_00">R$ 10.00</string>
+    <string name="pre_o">Preço</string>
+    <string name="frete">Frete</string>
+    <string name="salvar">Salvar</string>
+    <string name="ingrediente_ativo">Ingrediente ativo</string>
+    <string name="fechar">Fechar</string>
+    <string name="editar">Editar</string>
+    <string name="apagar">Apagar</string>
+    <string name="voltar">Voltar</string>
+    <string name="remover_das_buscas">Remover das buscas</string>
+    <string name="inserir_nas_buscas">Inserir nas buscas</string>
+    <string name="apenas_salvar">Apenas salvar</string>
+    <string name="salvar_e_publicar">Salvar e publicar</string>
 </resources>

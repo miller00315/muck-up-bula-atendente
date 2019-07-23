@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import br.com.miller.farmaciaatendente.R;
+import br.com.miller.farmaciaatendente.departamentManager.view.DepartamentManager;
+import br.com.miller.farmaciaatendente.departamentManager.view.MedicineManager;
 import br.com.miller.farmaciaatendente.domain.User;
 import br.com.miller.farmaciaatendente.mainMenu.adapters.MainMenuPageAdapter;
 import br.com.miller.farmaciaatendente.mainMenu.presenters.MainMenuPresenter;
@@ -179,6 +180,21 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
                     }
                 }
             }
+        }else if(requestCode == Constants.MEDICINE_MANAGER){
+
+            if(resultCode == RESULT_OK){
+
+                List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+                for(Fragment fragment: fragments){
+
+                    if(fragment instanceof DepartamentFragment){
+
+                        DepartamentFragment departamentFragment = (DepartamentFragment) fragment;
+                        departamentFragment.getDepartaments();
+                    }
+                }
+            }
         }
     }
 
@@ -218,6 +234,24 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
                 Intent intent = new Intent(this, ManipulateBuy.class);
                 intent.putExtra("params", bundle);
                 startActivity(intent);
+
+                break;
+            }
+
+            case 5 : {
+
+                Intent intent = new Intent(this, DepartamentManager.class);
+                intent.putExtra("params", bundle);
+                startActivityForResult(intent, Constants.MEDICINE_MANAGER);
+
+                break;
+            }
+
+            case 6 : {
+
+                Intent intent = new Intent(this, MedicineManager.class);
+                intent.putExtra("params", bundle);
+                startActivityForResult(intent, Constants.MEDICINE_MANAGER);
 
                 break;
             }

@@ -24,13 +24,14 @@ import br.com.miller.farmaciaatendente.mainMenu.presenters.StorePerfilPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.StorePerfilTasks;
 import br.com.miller.farmaciaatendente.utils.AlertDialogUtils;
 import br.com.miller.farmaciaatendente.utils.ImageUtils;
+import br.com.miller.farmaciaatendente.utils.StringUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.AlertDialogUtilsTask;
 
 public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Presenter, AlertDialogUtilsTask.Presenter {
     private OnFragmentInteractionListener mListener;
     private StorePerfilPresenter storePerfilPresenter;
     private User user;
-    private TextView storeName, storeDescription, storeCity, storeTime, storeClassification;
+    private TextView storeName, storeDescription, storeCity, storeTime, storeClassification,storeSendValue;
     private ImageView imageStore;
     private ScrollView scrollView;
     private AlertDialogUtils alertDialogUtils;
@@ -69,6 +70,7 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
         imageStore = view.findViewById(R.id.image_store);
         storeClassification = view.findViewById(R.id.store_classification);
         scrollView = view.findViewById(R.id.main_layout);
+        storeSendValue = view.findViewById(R.id.store_send_value);
 
         if(user.getStoreId() != null) {
 
@@ -111,6 +113,7 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
             storeTime.setText(store.getTime());
             storeDescription.setText(store.getDescription());
             storeName.setText(store.getName());
+            storeSendValue.setText(StringUtils.doubleToMonetaryString(store.getSendValue()));
             storeClassification.setText(String.valueOf(store.getClassification()));
 
             this.store = store;

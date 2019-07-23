@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:background="#00ffffff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textAlert"
+        android:textColor="#000000"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/just_save"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/textAlert"
+        android:textColor="#ffffff"
+        android:text="@string/apenas_salvar"
+        android:background="@drawable/background_button_rounded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/save_publish"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/just_save"
+        android:textColor="#ffffff"
+        android:text="@string/salvar_e_publicar"
+        android:background="@drawable/background_button_rounded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/close"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/save_publish"
+        android:textColor="#ffffff"
+        android:text="@string/voltar"
+        android:background="@drawable/background_button_rounded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

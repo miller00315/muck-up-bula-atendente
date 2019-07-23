@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".saleManager.views.activities.ManipulateBuy"></activity>
+        <activity android:name=".departamentManager.view.MedicineManager" />
+        <activity android:name=".departamentManager.view.DepartamentManager" />
+        <activity android:name=".saleManager.views.activities.ManipulateBuy" />
         <activity android:name=".opinions.views.OpinionActivity" />
         <activity android:name=".recoveryPassword.views.RecoveryPasswordActivity" />
         <activity android:name=".saleManager.views.activities.SalesManager" />

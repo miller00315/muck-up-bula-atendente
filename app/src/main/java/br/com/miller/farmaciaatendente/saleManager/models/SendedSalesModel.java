@@ -53,11 +53,12 @@ public class SendedSalesModel {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            if(!buys.contains(dataSnapshot.getValue(Buy.class))){
+                if(!buys.contains(dataSnapshot.getValue(Buy.class))){
 
-                buys.add(dataSnapshot.getValue(Buy.class));
-                model.onBuysDataSuccess(buys);
-            }
+                    buys.add(dataSnapshot.getValue(Buy.class));
+                    model.onBuysDataSuccess(buys);
+                }
+
         }
 
         @Override

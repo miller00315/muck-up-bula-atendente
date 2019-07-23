@@ -11,6 +11,11 @@ public class Store {
     private String phone;
     private String city;
     private int classification = 0;
+    private double sendValue;
+
+    public double getSendValue() { return sendValue; }
+
+    public void setSendValue(double sendValue) { this.sendValue = sendValue; }
 
     public int getClassification() { return classification; }
 

@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_news"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/novos" />
 
     <item
         android:id="@+id/navigation_sended"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_send_black_24dp"
         android:title="@string/enviados" />
 
     <item
         android:id="@+id/navigation_received"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_assignment_turned_in_black_24dp"
         android:title="@string/entregues" />
 
     <item
         android:id="@+id/navigation_canceled"
         android:icon="@drawable/ic_cancel_black_24dp"
-        android:title="@string/entregues" />
+        android:title="@string/cancelados" />
 
 </menu>

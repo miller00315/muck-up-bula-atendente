@@ -2,10 +2,12 @@ package br.com.miller.farmaciaatendente.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Offer implements Parcelable {
 
-    private int id;
+    private String id;
     private double value;
     private int quantity;
     private String description;
@@ -18,17 +20,15 @@ public class Offer implements Parcelable {
     private String noIndication;
     private String active;
     private String store;
-    private int storeId;
-    private int departamentId;
+    private String storeId;
+    private String departamentId;
     private String cartId;
 
-
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,9 +44,6 @@ public class Offer implements Parcelable {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public String getDescription() {
         return description;
@@ -128,28 +125,20 @@ public class Offer implements Parcelable {
         this.store = store;
     }
 
-    public int getStoreId() {
+    public String getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(int storeId) {
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
 
-    public int getDepartamentId() {
+    public String getDepartamentId() {
         return departamentId;
     }
 
-    public void setDepartamentId(int departamentId) {
+    public void setDepartamentId(String departamentId) {
         this.departamentId = departamentId;
-    }
-
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
     }
 
     @Override
@@ -159,7 +148,7 @@ public class Offer implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeString(this.id);
         dest.writeDouble(this.value);
         dest.writeInt(this.quantity);
         dest.writeString(this.description);
@@ -172,16 +161,41 @@ public class Offer implements Parcelable {
         dest.writeString(this.noIndication);
         dest.writeString(this.active);
         dest.writeString(this.store);
-        dest.writeInt(this.storeId);
-        dest.writeInt(this.departamentId);
+        dest.writeString(this.storeId);
+        dest.writeString(this.departamentId);
         dest.writeString(this.cartId);
     }
 
     public Offer() {
     }
 
+    public Offer(Object o){
+
+        if(o instanceof HashMap){
+
+            HashMap hashMap = (HashMap) o;
+
+            this.id = Objects.requireNonNull(hashMap.get("id")).toString();
+            this.value = Double.valueOf(Objects.requireNonNull(hashMap.get("value")).toString());
+            this.quantity = Integer.valueOf(Objects.requireNonNull(hashMap.get("quantity")).toString());
+            this.description = Objects.requireNonNull(hashMap.get("description")).toString();
+            this.title = Objects.requireNonNull(hashMap.get("title")).toString();
+            this.type = Objects.requireNonNull(hashMap.get("type")).toString();
+            this.city = Objects.requireNonNull(hashMap.get("city")).toString();
+            this.sendValue = Double.valueOf(Objects.requireNonNull(hashMap.get("sendValue")).toString());
+            this.image = Objects.requireNonNull(hashMap.get("image")).toString();
+            this.indication = Objects.requireNonNull(hashMap.get("indication")).toString();
+            this.noIndication = Objects.requireNonNull(hashMap.get("noIndication")).toString();
+            this.active = Objects.requireNonNull(hashMap.get("active")).toString();
+            this.store = Objects.requireNonNull(hashMap.get("store")).toString();
+            this.storeId = Objects.requireNonNull(hashMap.get("storeId")).toString();
+            this.departamentId = Objects.requireNonNull(hashMap.get("departamentId")).toString();
+
+        }
+    }
+
     protected Offer(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readString();
         this.value = in.readDouble();
         this.quantity = in.readInt();
         this.description = in.readString();
@@ -194,8 +208,8 @@ public class Offer implements Parcelable {
         this.noIndication = in.readString();
         this.active = in.readString();
         this.store = in.readString();
-        this.storeId = in.readInt();
-        this.departamentId = in.readInt();
+        this.storeId = in.readString();
+        this.departamentId = in.readString();
         this.cartId = in.readString();
     }
 

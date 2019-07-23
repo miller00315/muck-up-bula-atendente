@@ -32,6 +32,12 @@ public class RecyclerAdapterDepartament extends RecyclerItem {
     public void showItem(int i) {
 
         Bundle bundle = new Bundle();
+
+        bundle.putInt("type", 5);
+        bundle.putString("departamentId", departaments.get(i).getId());
+        bundle.putString("city", departaments.get(i).getCity());
+        bundle.putString("storeId", departaments.get(i).getIdStore());
+
         onAdapterInteract.onAdapterInteract(bundle);
     }
 
@@ -68,6 +74,12 @@ public class RecyclerAdapterDepartament extends RecyclerItem {
                 }
             });
 
+            departamentViewHolder.getDepartamentTitle().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showItem(departamentViewHolder.getAdapterPosition());
+                }
+            });
 
         }
     }
