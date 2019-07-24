@@ -1,6 +1,7 @@
 package br.com.miller.farmaciaatendente.mainMenu.tasks;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import br.com.miller.farmaciaatendente.domain.Store;
 
@@ -20,8 +21,9 @@ public interface StorePerfilTasks {
 
     interface View{
 
+        Store getStore();
         void getStore(String storeId, String city);
-        void updateStore(Store store);
+        void updateStore(Bundle bundle);
         void downloadImage(String type, String city, String image);
         void uploadImage(String type, String city, String image, Bitmap bitmap);
 

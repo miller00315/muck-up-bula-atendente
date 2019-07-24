@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,32 +16,31 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import br.com.miller.farmaciaatendente.R;
 import br.com.miller.farmaciaatendente.domain.Store;
 import br.com.miller.farmaciaatendente.domain.User;
 import br.com.miller.farmaciaatendente.mainMenu.presenters.StorePerfilPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.StorePerfilTasks;
-import br.com.miller.farmaciaatendente.utils.AlertDialogUtils;
-import br.com.miller.farmaciaatendente.utils.ImageUtils;
+import br.com.miller.farmaciaatendente.utils.Constants;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
-import br.com.miller.farmaciaatendente.utils.tasks.AlertDialogUtilsTask;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
+import br.com.miller.farmaciaatendente.utils.alerts.ImageDialogFragment;
 
-public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Presenter, AlertDialogUtilsTask.Presenter {
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Presenter,
+        EditTextDialogFragment.AlertOptionsResult,
+        ImageDialogFragment.ImageDialogFragmentListener {
+
     private OnFragmentInteractionListener mListener;
     private StorePerfilPresenter storePerfilPresenter;
     private User user;
     private TextView storeName, storeDescription, storeCity, storeTime, storeClassification,storeSendValue;
-    private ImageView imageStore;
-    private ScrollView scrollView;
-    private AlertDialogUtils alertDialogUtils;
-    private Store store;
+    private ImageView imageStore, editImageStorePerfil;
     public static final int ID = 221;
 
-    public StorePerfilFragment() {
-        // Required empty public constructor
-    }
+    public StorePerfilFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +52,6 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
         }
 
         storePerfilPresenter = new StorePerfilPresenter(this);
-        alertDialogUtils = new AlertDialogUtils(this);
-
-        alertDialogUtils.setContext(getContext());
     }
 
     @Override
@@ -69,8 +66,11 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
         storeTime = view.findViewById(R.id.store_time);
         imageStore = view.findViewById(R.id.image_store);
         storeClassification = view.findViewById(R.id.store_classification);
-        scrollView = view.findViewById(R.id.main_layout);
+        ScrollView scrollView = view.findViewById(R.id.main_layout);
         storeSendValue = view.findViewById(R.id.store_send_value);
+        editImageStorePerfil = view.findViewById(R.id.edit_image_store_perfil);
+
+        bindViews();
 
         if(user.getStoreId() != null) {
 
@@ -85,6 +85,118 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
         }
 
         return view;
+    }
+
+    private void bindViews(){
+
+        editImageStorePerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("type", 3);
+
+                mListener.onFragmentInteraction(bundle);
+
+            }
+        });
+
+        storeName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+
+                bundle.putString("text", storePerfilPresenter.getStore().getName());
+
+                bundle.putString("type", Constants.STORE_NAME);
+
+                bundle.putString("hint", "Nome da loja");
+
+                openAlert(bundle);
+
+            }
+        });
+
+        storeDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Descrição");
+
+                bundle.putString("type", Constants.STORE_SESCRIPTION);
+
+                bundle.putString("text", storePerfilPresenter.getStore().getDescription());
+
+                openAlert(bundle);
+
+            }
+        });
+
+        storeSendValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_CLASS_NUMBER);
+
+                bundle.putString("hint", "Valor de envio");
+
+                bundle.putBoolean("isMoney", true);
+
+                bundle.putString("type", Constants.STORE_SEND_VALUE);
+
+                bundle.putString("text", String.valueOf(storePerfilPresenter.getStore().getSendValue()));
+
+                openAlert(bundle);
+
+            }
+        });
+
+        storeTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_CLASS_TEXT);
+
+                bundle.putString("hint", "Horário de funcionamento");
+
+                bundle.putString("type", Constants.STORE_TIME);
+
+                bundle.putString("text", storePerfilPresenter.getStore().getTime());
+
+                openAlert(bundle);
+
+            }
+        });
+    }
+
+
+    public void openAlert(Bundle bundle){
+
+        EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+
+        editTextDialogFragment.setListener(this);
+
+        editTextDialogFragment.openDialog(getFragmentManager());
     }
 
 
@@ -116,23 +228,19 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
             storeSendValue.setText(StringUtils.doubleToMonetaryString(store.getSendValue()));
             storeClassification.setText(String.valueOf(store.getClassification()));
 
-            this.store = store;
-
             storePerfilPresenter.downloadImage("stores", store.getCity(), store.getImage());
         }
     }
 
     public void setImageAlert(Intent intent){
 
-        ViewGroup viewGroup = Objects.requireNonNull(getActivity()).findViewById(android.R.id.content);
+        Bundle bundle = new Bundle();
 
-        View view = getLayoutInflater().inflate(R.layout.layout_alert_image_view, viewGroup , false);
+        ImageDialogFragment  imageDialogFragment = ImageDialogFragment.newInstance(bundle);
 
-        ImageView imageView = view.findViewById(R.id.image_memory);
+        imageDialogFragment.setListener(this, intent);
 
-        ImageUtils.getImageFromMwmory(intent, imageView);
-
-        alertDialogUtils.creatAlertImageView(view, 0);
+        imageDialogFragment.openDialog(getFragmentManager());
     }
 
 
@@ -161,12 +269,16 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
     public void onUpdateStoreFailed() { }
 
     @Override
-    public void onAlertPositive(Object o, int type) {
-        if(o instanceof Bitmap){ storePerfilPresenter.uploadImage("stores", store.getCity(), store.getImage(), (Bitmap) o ); }
-    }
+    public void onEditTextDialogFragmentResult(Bundle bundle) { storePerfilPresenter.updateStore(bundle);}
 
     @Override
-    public void onALertNegative() {
+    public void onImageDialogFragmentListener(Bitmap bitmap, int result) {
+
+        if(result == RESULT_OK)
+            storePerfilPresenter.uploadImage("stores", storePerfilPresenter.getStore().getCity(), storePerfilPresenter.getStore().getImage(), bitmap);
+
+        else if(result == RESULT_CANCELED)
+            Toast.makeText(getContext(), "Erro a obter a imagem, tente novament", Toast.LENGTH_SHORT).show();
 
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
 
 import br.com.miller.farmaciaatendente.domain.Store;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.StorePerfilTasks;
-import br.com.miller.farmaciaatendente.utils.FirebaseImageUtils;
+import br.com.miller.farmaciaatendente.utils.images.FirebaseImageUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.FirebaseImageTask;
 
 public class StorePerfilModel implements FirebaseImageTask.Model {
@@ -24,6 +24,7 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
     private StorePerfilTasks.Model model;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseImageUtils firebaseImageUtils;
+    private Store store;
 
     public StorePerfilModel(StorePerfilTasks.Model model) {
         this.model = model;
@@ -33,8 +34,6 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
 
     public void getStore(String storeId, String city){
 
-        Log.w(this.getClass().getName(), storeId);
-
         firebaseDatabase.getReference()
                 .child("stores")
                 .child(city)
@@ -43,7 +42,9 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists())
-                            model.onStoreDataSuccess(dataSnapshot.getValue(Store.class));
+                            store = dataSnapshot.getValue(Store.class);
+                            if(store != null)
+                                model.onStoreDataSuccess(store);
                         else
                             model.onStoreDataFailed();
                     }
@@ -56,7 +57,7 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
 
     }
 
-    public void updateStore(final Store store){
+    public void updateStore(final Store s){
 
         Map<String, Object> map = new HashMap<>();
 
@@ -69,7 +70,10 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        model.onUpdateStoreSuccess(store);
+
+                        store = s;
+                        model.onUpdateStoreSuccess(s);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -98,4 +102,6 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
 
     @Override
     public void onImageDownloadFailed() { model.onImageDownloadFailed();}
+
+    public Store getStore() { return store; }
 }

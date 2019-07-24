@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.com.miller.farmaciaatendente.R;
-import br.com.miller.farmaciaatendente.utils.FirebaseImageUtils;
+import br.com.miller.farmaciaatendente.utils.images.FirebaseImageUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.FirebaseImageTask;
 
 public class OffersViewHolder extends RecyclerView.ViewHolder implements FirebaseImageTask.Model {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +22,12 @@ import br.com.miller.farmaciaatendente.saleManager.presenters.ManipulateBuyPrese
 import br.com.miller.farmaciaatendente.saleManager.tasks.ManipulateBuyTask;
 import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
 
-public class ManipulateBuy extends AppCompatActivity implements ManipulateBuyTask.Presenter, RecyclerItem.OnAdapterInteract {
+public class ManipulateBuy extends AppCompatActivity implements
+        ManipulateBuyTask.Presenter,
+        RecyclerItem.OnAdapterInteract,
+        EditTextDialogFragment.AlertOptionsResult{
 
     private Bundle bundle;
     private ManipulateBuyPresenter manipulateBuyPresenter;
@@ -92,6 +97,18 @@ public class ManipulateBuy extends AppCompatActivity implements ManipulateBuyTas
         switch (item.getItemId()){
 
             case R.id.chat_icon :{
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Fale conosco");
+
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+                editTextDialogFragment.setListener(this);
+                editTextDialogFragment.openDialog(getSupportFragmentManager());
 
                 break;
             }
@@ -200,4 +217,9 @@ public class ManipulateBuy extends AppCompatActivity implements ManipulateBuyTas
     public void onAdapterInteract(Bundle bundle) { }
 
     public void receiveBuy(View view) { manipulateBuyPresenter.sendBuyToReceived(); }
+
+    @Override
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
+
+    }
 }

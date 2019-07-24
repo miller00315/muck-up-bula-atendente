@@ -1,6 +1,7 @@
 package br.com.miller.farmaciaatendente.mainMenu.tasks;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import br.com.miller.farmaciaatendente.domain.User;
 
@@ -11,8 +12,8 @@ public interface PersonalPerfilTasks {
         void getUserData(String firebaseId, String city);
         void downloadImage(String type, String city, String image);
         void uploadImage(String type, String city, String image, Bitmap bitmap);
-        void updateUser(User user);
-        void checkData(Object o, int type, User user);
+        void updateUser(Bundle bundle);
+        User getUser();
 
     }
 

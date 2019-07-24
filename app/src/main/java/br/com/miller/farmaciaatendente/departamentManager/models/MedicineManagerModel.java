@@ -18,7 +18,7 @@ import java.util.Map;
 import br.com.miller.farmaciaatendente.departamentManager.tasks.MedicineManagerTasks;
 import br.com.miller.farmaciaatendente.domain.Offer;
 import br.com.miller.farmaciaatendente.domain.Store;
-import br.com.miller.farmaciaatendente.utils.FirebaseImageUtils;
+import br.com.miller.farmaciaatendente.utils.images.FirebaseImageUtils;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.FirebaseImageTask;
 

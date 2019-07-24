@@ -1,19 +1,20 @@
 package br.com.miller.farmaciaatendente.mainMenu.presenters;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
+
+import java.util.Objects;
 
 import br.com.miller.farmaciaatendente.domain.Address;
-import br.com.miller.farmaciaatendente.domain.CompleteName;
 import br.com.miller.farmaciaatendente.domain.User;
 import br.com.miller.farmaciaatendente.mainMenu.models.PerfilModel;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.PersonalPerfilTasks;
-import br.com.miller.farmaciaatendente.utils.AlertDialogUtils;
+import br.com.miller.farmaciaatendente.utils.Constants;
 
 public class PersonalPerfilPresenter implements PersonalPerfilTasks.Model, PersonalPerfilTasks.View {
 
     private PersonalPerfilTasks.Presenter presenter;
     private PerfilModel model;
-    private AlertDialogUtils alertDialogUtils;
 
     public PersonalPerfilPresenter(PersonalPerfilTasks.Presenter presenter) {
         this.presenter = presenter;
@@ -30,51 +31,52 @@ public class PersonalPerfilPresenter implements PersonalPerfilTasks.Model, Perso
     public void uploadImage(String type, String city, String image, Bitmap bitmap) { model.uploadImage(type, city, image, bitmap);}
 
     @Override
-    public void updateUser(User user) { model.updateUserData(user);}
+    public void updateUser(Bundle bundle) {
 
-    @Override
-    public void checkData(Object o, int type, User user) {
+        User user = model.getUser();
 
-        switch (type){
+        switch (Objects.requireNonNull(bundle.getString("type"))){
 
-            case 0:{
+            case Constants.USER_NAME:{
 
-                if(o instanceof CompleteName) {
-                    user.setName(((CompleteName) o).getName());
-                    user.setSurname(((CompleteName) o).getSurname());
+                user.setName(bundle.getString("firstResult"));
+                user.setSurname(bundle.getString("secondResult"));
+
+                break;
+            }
+
+            case Constants.USER_PHONE:{
+                user.setPhone(bundle.getString("result"));
+                break;
+            }
+
+            case Constants.USER_ADDRESS:{
+
+                if(user.getAddress() != null)
+                    user.getAddress().setAddress(bundle.getString("result"));
+                else{
+
+                    user.setAddress(new Address());
+
+                    user.getAddress().setAddress(bundle.getString("result"));
                 }
 
                 break;
             }
 
-            case 1:{
-
-                if(o instanceof String) user.setEmail((String) o);
-
+            case Constants.USER_EMAIL:{
+                user.setEmail(bundle.getString("result"));
                 break;
             }
 
-            case 2:{
-
-                if(o instanceof Address) user.setAddress((Address) o);
-
-                break;
-            }
-
-            case 3:{
-
-                if(o instanceof String) user.setPhone((String) o);
-
-                break;
-            }
-
-            default:
-                break;
         }
 
-        updateUser(user);
+        model.updateUserData(user);
 
     }
+
+    @Override
+    public User getUser() { return model.getUser(); }
 
     @Override
     public void onImageDownloadSuccess(Bitmap bitmap) { presenter.onImageDownloadSuccess(bitmap);}

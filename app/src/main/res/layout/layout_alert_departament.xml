@@ -32,6 +32,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <Button
+                android:id="@+id/confirm"
+                android:textColor="#ffffff"
+                android:text="@string/confirmar"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_button_rounded"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:textColor="#ffffff"
+                android:text="@string/confirmar"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_button_rounded"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -15,7 +15,7 @@ import br.com.miller.farmaciaatendente.mainMenu.views.activities.MainMenuActivit
 import br.com.miller.farmaciaatendente.register.presenters.RegisterPresenter;
 import br.com.miller.farmaciaatendente.register.tasks.RegisterTasks;
 import br.com.miller.farmaciaatendente.utils.Constants;
-import br.com.miller.farmaciaatendente.utils.ImageUtils;
+import br.com.miller.farmaciaatendente.utils.images.ImageUtils;
 
 public class RegisterAcivity extends AppCompatActivity implements RegisterTasks.Presenter {
 
@@ -147,7 +147,7 @@ public class RegisterAcivity extends AppCompatActivity implements RegisterTasks.
     public void onAnonymousUserDestroyFailed() { }
 
     @Override
-    public void onUserDataBaseSuccess(User user) { registerPresenter.uploadImage(user, ImageUtils.getImageUser(imageUser)); }
+    public void onUserDataBaseSuccess(User user) { registerPresenter.uploadImage(user, ImageUtils.getImageFormImageView(imageUser)); }
 
     @Override
     public void onUserDataBaseFailed() { Toast.makeText(this, "Erro ao fazer o upload da imagem, tente novamente", Toast.LENGTH_SHORT).show(); }

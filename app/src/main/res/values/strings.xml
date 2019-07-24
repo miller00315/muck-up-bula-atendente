@@ -70,4 +70,7 @@
     <string name="inserir_nas_buscas">Inserir nas buscas</string>
     <string name="apenas_salvar">Apenas salvar</string>
     <string name="salvar_e_publicar">Salvar e publicar</string>
+    <string name="toque_na_imagem_para_alter_la">Toque na imagem para alterá-la</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

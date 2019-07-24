@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,12 +31,15 @@ import br.com.miller.farmaciaatendente.mainMenu.views.fragments.StorePerfilFragm
 import br.com.miller.farmaciaatendente.saleManager.views.activities.ManipulateBuy;
 import br.com.miller.farmaciaatendente.saleManager.views.activities.SalesManager;
 import br.com.miller.farmaciaatendente.utils.Constants;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
+import br.com.miller.farmaciaatendente.utils.alerts.SpinnerDialogFragment;
 
 public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks.Presenter,
         SolicitationFragment.OnFragmentInteractionListener,
         PersonalPerfilFragment.OnFragmentInteractionListener,
         DepartamentFragment.OnFragmentInteractionListener,
-        StorePerfilFragment.OnFragmentInteractionListener {
+        StorePerfilFragment.OnFragmentInteractionListener,
+        EditTextDialogFragment.AlertOptionsResult {
 
     private MainMenuPresenter mainMenuPresenter;
     private ViewPager viewPager;
@@ -122,6 +126,18 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
         switch (item.getItemId()){
 
             case R.id.chat_icon :{
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Fale conosco");
+
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+                editTextDialogFragment.setListener(this);
+                editTextDialogFragment.openDialog(getSupportFragmentManager());
 
             }
 
@@ -259,6 +275,12 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
             default:
                 break;
         }
+
+    }
+
+
+    @Override
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
 
     }
 }

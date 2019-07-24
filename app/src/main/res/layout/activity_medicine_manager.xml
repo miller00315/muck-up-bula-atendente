@@ -21,7 +21,6 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -31,7 +30,17 @@
                     android:id="@+id/medicine_image"
                     android:layout_centerHorizontal="true"
                     android:layout_width="200dp"
-                    android:layout_height="200dp" />
+                    android:layout_height="200dp"
+                    android:onClick="getImage"/>
+
+                <TextView
+                    android:layout_below="@id/medicine_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="@string/toque_na_imagem_para_alter_la"/>
 
             </RelativeLayout>
 

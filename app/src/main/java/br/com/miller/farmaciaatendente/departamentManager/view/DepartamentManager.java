@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +23,15 @@ import br.com.miller.farmaciaatendente.domain.Departament;
 import br.com.miller.farmaciaatendente.domain.Offer;
 import br.com.miller.farmaciaatendente.mainMenu.adapters.recyclersAdapters.RecyclerAdapterOffers;
 import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
-import br.com.miller.farmaciaatendente.utils.AlertOptions;
+import br.com.miller.farmaciaatendente.utils.alerts.AlertOptions;
 import br.com.miller.farmaciaatendente.utils.Constants;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
 
-public class DepartamentManager extends AppCompatActivity implements RecyclerItem.OnAdapterInteract, DepartamentManagerTasks.Presenter, AlertOptions.AlertOptionsResult {
+public class DepartamentManager extends AppCompatActivity implements
+        RecyclerItem.OnAdapterInteract,
+        DepartamentManagerTasks.Presenter,
+        AlertOptions.AlertOptionsResult,
+        EditTextDialogFragment.AlertOptionsResult{
 
     private RecyclerView recyclerView;
     private RecyclerAdapterOffers recyclerAdapterOffers;
@@ -85,6 +90,18 @@ public class DepartamentManager extends AppCompatActivity implements RecyclerIte
         switch (item.getItemId()){
 
             case R.id.chat_icon :{
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Fale conosco");
+
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+                editTextDialogFragment.setListener(this);
+                editTextDialogFragment.openDialog(getSupportFragmentManager());
 
                 break;
             }
@@ -215,5 +232,10 @@ public class DepartamentManager extends AppCompatActivity implements RecyclerIte
 
             }
         }
+    }
+
+    @Override
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
+
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import br.com.miller.farmaciaatendente.domain.User;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.PersonalPerfilTasks;
-import br.com.miller.farmaciaatendente.utils.FirebaseImageUtils;
+import br.com.miller.farmaciaatendente.utils.images.FirebaseImageUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.FirebaseImageTask;
 
 public class PerfilModel implements FirebaseImageTask.Model {
@@ -57,13 +57,11 @@ public class PerfilModel implements FirebaseImageTask.Model {
                 });
     }
 
-    public void updateUserData(final User user){
+    public void updateUserData(final User us){
 
         Map<String, Object> map = new HashMap<>();
 
         map.put(user.getId_firebase(), user);
-
-        this.user = user;
 
         firebaseDatabase.getReference()
                 .child("users")
@@ -72,6 +70,8 @@ public class PerfilModel implements FirebaseImageTask.Model {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                        user = us;
 
                         model.onUpdateUserSuccess(user);
                     }

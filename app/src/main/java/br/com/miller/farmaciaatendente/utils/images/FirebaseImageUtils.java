@@ -1,4 +1,4 @@
-package br.com.miller.farmaciaatendente.utils;
+package br.com.miller.farmaciaatendente.utils.images;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import br.com.miller.farmaciaatendente.utils.images.ImageUtils;
 import br.com.miller.farmaciaatendente.utils.tasks.FirebaseImageTask;
 
 

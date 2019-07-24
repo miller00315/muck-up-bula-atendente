@@ -1,9 +1,11 @@
 package br.com.miller.farmaciaatendente.departamentManager.view;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,18 +13,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Locale;
 import java.util.Objects;
 
 import br.com.miller.farmaciaatendente.R;
-import br.com.miller.farmaciaatendente.departamentManager.helpers.AlertOptionsMedicineManager;
+import br.com.miller.farmaciaatendente.utils.alerts.AlertOptionsMedicineManager;
 import br.com.miller.farmaciaatendente.departamentManager.presenter.MedicineManagerPresenter;
 import br.com.miller.farmaciaatendente.departamentManager.tasks.MedicineManagerTasks;
 import br.com.miller.farmaciaatendente.domain.Offer;
-import br.com.miller.farmaciaatendente.utils.ImageUtils;
+import br.com.miller.farmaciaatendente.utils.Constants;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
+import br.com.miller.farmaciaatendente.utils.alerts.ImageDialogFragment;
+import br.com.miller.farmaciaatendente.utils.images.ImageUtils;
 import br.com.miller.farmaciaatendente.utils.MoneyTextWatcher;
 
-public class MedicineManager extends AppCompatActivity implements MedicineManagerTasks.Presenter, AlertOptionsMedicineManager.AlertOptionsResult {
+public class MedicineManager extends AppCompatActivity implements
+        MedicineManagerTasks.Presenter,
+        AlertOptionsMedicineManager.AlertOptionsResult,
+        ImageDialogFragment.ImageDialogFragmentListener,
+        EditTextDialogFragment.AlertOptionsResult{
 
     private Bundle bundle;
     private MedicineManagerPresenter medicineManagerPresenter;
@@ -62,7 +73,6 @@ public class MedicineManager extends AppCompatActivity implements MedicineManage
 
     public void bindView(){
 
-
         medicineValue.addTextChangedListener(new MoneyTextWatcher(medicineValue, Locale.getDefault()));
 
         medicineManagerPresenter.setData(bundle);
@@ -81,7 +91,22 @@ public class MedicineManager extends AppCompatActivity implements MedicineManage
 
         switch (item.getItemId()){
 
-            case R.id.chat_icon :{ break; }
+            case R.id.chat_icon :{
+
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Fale conosco");
+
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+                editTextDialogFragment.setListener(this);
+                editTextDialogFragment.openDialog(getSupportFragmentManager());
+
+                break;
+            }
 
             case android.R.id.home:{
 
@@ -130,7 +155,7 @@ public class MedicineManager extends AppCompatActivity implements MedicineManage
     public void onUpdateMedicineSuccess(Offer offer) {
         isNewMedicine = false;
         this.setView(offer);
-        medicineManagerPresenter.uploadImage("offers", offer.getCity(), offer.getImage(), ImageUtils.getImageUser(medicineImage));
+        medicineManagerPresenter.uploadImage("offers", offer.getCity(), offer.getImage(), ImageUtils.getImageFormImageView(medicineImage));
     }
 
     @Override
@@ -282,5 +307,49 @@ public class MedicineManager extends AppCompatActivity implements MedicineManage
                 break;
             }
         }
+    }
+
+    public void getImage(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, Constants.INTERNAL_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.INTERNAL_IMAGE){
+
+            if(resultCode == RESULT_OK){
+
+                if(data != null){
+
+                    Bundle bundle = new Bundle();
+
+                    ImageDialogFragment imageDialogFragment = ImageDialogFragment.newInstance(bundle);
+
+                    imageDialogFragment.setListener(this, data);
+
+                    imageDialogFragment.openDialog(getSupportFragmentManager());
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onImageDialogFragmentListener(Bitmap bitmap, int result) {
+
+        if(result == RESULT_OK) medicineImage.setImageBitmap(bitmap);
+
+        else if(result == RESULT_CANCELED) Toast.makeText(this, "Erro a obter a imagem, tente novamente", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
+
     }
 }

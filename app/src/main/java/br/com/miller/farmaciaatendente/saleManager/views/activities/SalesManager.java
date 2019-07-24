@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,12 +24,14 @@ import br.com.miller.farmaciaatendente.saleManager.views.fragments.NewsSales;
 import br.com.miller.farmaciaatendente.saleManager.views.fragments.ReceivedSales;
 import br.com.miller.farmaciaatendente.saleManager.views.fragments.SendedSales;
 import br.com.miller.farmaciaatendente.utils.Constants;
+import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
 
 public class SalesManager extends AppCompatActivity implements SaleManagerTasks.Presenter,
         NewsSales.OnFragmentInteractionListener,
         SendedSales.OnFragmentInteractionListener,
         ReceivedSales.OnFragmentInteractionListener,
-        CanceledSales.OnFragmentInteractionListener {
+        CanceledSales.OnFragmentInteractionListener,
+        EditTextDialogFragment.AlertOptionsResult{
 
     private SaleManagerPresenter saleManagerPresenter;
     private ViewPager viewPager;
@@ -127,6 +130,18 @@ public class SalesManager extends AppCompatActivity implements SaleManagerTasks.
 
             case R.id.chat_icon :{
 
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("view", R.layout.layout_single_edit_text_alert_fragment);
+
+                bundle.putInt("inputType", InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+                bundle.putString("hint", "Fale conosco");
+
+                EditTextDialogFragment editTextDialogFragment = EditTextDialogFragment.newInstance(bundle);
+                editTextDialogFragment.setListener(this);
+                editTextDialogFragment.openDialog(getSupportFragmentManager());
+
                 break;
             }
 
@@ -163,5 +178,10 @@ public class SalesManager extends AppCompatActivity implements SaleManagerTasks.
                 break;
 
         }
+    }
+
+    @Override
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
+        
     }
 }

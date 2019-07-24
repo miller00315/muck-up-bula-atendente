@@ -1,4 +1,4 @@
-package br.com.miller.farmaciaatendente.utils;
+package br.com.miller.farmaciaatendente.utils.alerts;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,8 +15,7 @@ import br.com.miller.farmaciaatendente.R;
 
 public class AlertOptions extends DialogFragment{
 
-    private static final
-    String DIALOG_TAG = "editDialog";
+    private static final String DIALOG_TAG = AlertOptions.class.getSimpleName();
 
     public interface AlertOptionsResult{ void onAlertOptionResult(Bundle bundle, int type);}
 

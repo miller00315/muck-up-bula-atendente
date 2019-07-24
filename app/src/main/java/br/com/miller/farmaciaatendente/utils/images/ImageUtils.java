@@ -1,4 +1,4 @@
-package br.com.miller.farmaciaatendente.utils;
+package br.com.miller.farmaciaatendente.utils.images;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import br.com.miller.farmaciaatendente.R;
 
 public class ImageUtils {
 
-    public static Bitmap getImageUser(ImageView image){
+    public static Bitmap getImageFormImageView(ImageView image){
 
         Bitmap bitmap;
 
@@ -52,7 +52,8 @@ public class ImageUtils {
     }
 
 
-    public static void getImageFromMwmory(Intent data, ImageView imageView){
+
+    public static void getImageFromMemory(Intent data, ImageView imageView){
 
         Uri uri;
 
@@ -76,4 +77,7 @@ public class ImageUtils {
             }
         }
     }
+
+
 }
+

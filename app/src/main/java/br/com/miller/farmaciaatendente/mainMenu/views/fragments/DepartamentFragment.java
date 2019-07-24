@@ -9,32 +9,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import br.com.miller.farmaciaatendente.R;
 import br.com.miller.farmaciaatendente.domain.Departament;
 import br.com.miller.farmaciaatendente.domain.User;
-import br.com.miller.farmaciaatendente.mainMenu.adapters.arrayAdapters.SpinnnerArrayAdapterDepartament;
 import br.com.miller.farmaciaatendente.mainMenu.adapters.recyclersAdapters.RecyclerAdapterDepartament;
 import br.com.miller.farmaciaatendente.mainMenu.presenters.DepartamentPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.DepartamentTask;
 import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
-import br.com.miller.farmaciaatendente.utils.AlertDialogUtils;
-import br.com.miller.farmaciaatendente.utils.tasks.AlertDialogUtilsTask;
+import br.com.miller.farmaciaatendente.utils.alerts.SpinnerDialogFragment;
 
 
-public class DepartamentFragment extends Fragment implements DepartamentTask.Presenter, RecyclerItem.OnAdapterInteract, AlertDialogUtilsTask.Presenter {
+public class DepartamentFragment extends Fragment implements DepartamentTask.Presenter,
+        RecyclerItem.OnAdapterInteract,
+        SpinnerDialogFragment.SpinnerDialogFragmentListener {
 
     private OnFragmentInteractionListener mListener;
     private DepartamentPresenter departamentPresenter;
     private User user;
-    private AlertDialogUtils alertDialogUtils;
     private RecyclerAdapterDepartament recyclerAdapterDepartament;
     private RecyclerView recyclerViewDepatament;
     private FloatingActionButton floatingActionButton;
@@ -50,8 +47,6 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
             user = getArguments().getParcelable("user");
         }
 
-        alertDialogUtils = new AlertDialogUtils(this);
-        alertDialogUtils.setContext(getContext());
         recyclerAdapterDepartament = new RecyclerAdapterDepartament(this, getContext());
         departamentPresenter = new DepartamentPresenter(this);
     }
@@ -141,31 +136,28 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
     @Override
     public void onDepartamentsAvaliablesuccess(ArrayList<Departament> departaments) {
 
-        SpinnnerArrayAdapterDepartament spinnnerArrayAdapterDepartament = new SpinnnerArrayAdapterDepartament(getContext(), departaments);
+        Bundle bundle = new Bundle();
 
-        ViewGroup viewGroup = Objects.requireNonNull(getActivity()).findViewById(android.R.id.content);
+        SpinnerDialogFragment spinnerDialogFragment = SpinnerDialogFragment.newInstance(bundle);
 
-        View view = getLayoutInflater().inflate(R.layout.alert_dialog_new_departament, viewGroup, false);
+        spinnerDialogFragment.setListener(this, getContext(), departaments);
 
-        Spinner spinner = view.findViewById(R.id.spinner_departament);
-
-        spinner.setAdapter(spinnnerArrayAdapterDepartament);
-
-        alertDialogUtils.createAlertDialogSpinner(view, 1);
-    }
-
-    @Override
-    public void onDepartmentAddFailed() { Toast.makeText(getContext(), "Este departamento não pode ser adicionado, tentenovamente", Toast.LENGTH_SHORT).show();}
-
-    @Override
-    public void onAlertPositive(Object o, int type) {
-
-        if(type == 1) if(o instanceof Departament) departamentPresenter.addDepartment((Departament) o, recyclerAdapterDepartament.getDepartaments(), user.getStoreId());
+        spinnerDialogFragment.openDialog(getFragmentManager());
 
     }
 
     @Override
-    public void onALertNegative() { }
+    public void onDepartmentAddFailed() { Toast.makeText(getContext(), "Este departamento não pode ser adicionado, tente novamente", Toast.LENGTH_SHORT).show();}
+
+    @Override
+    public void onSpinnerDialogFragment(Bundle bundle) {
+
+        if(bundle.containsKey("departament")){
+
+            departamentPresenter.addDepartment((Departament) bundle.getParcelable("departament"),recyclerAdapterDepartament.getDepartaments(), user.getStoreId());
+        }
+
+    }
 
     public interface OnFragmentInteractionListener { void onFragmentInteraction(Bundle bundle);}
 }
