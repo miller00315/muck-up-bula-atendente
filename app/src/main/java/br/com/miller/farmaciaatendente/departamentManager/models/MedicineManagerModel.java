@@ -39,8 +39,6 @@ public class MedicineManagerModel implements FirebaseImageTask.Model {
 
         String title = offer.getTitle();
 
-        Log.w("this", StringUtils.normalizer(title));
-
         offer.setTitle(name);
         offer.setDescription(description);
         offer.setIndication(indication);
@@ -57,15 +55,17 @@ public class MedicineManagerModel implements FirebaseImageTask.Model {
         if(publish) {
 
             firebaseDatabase.getReference()
-                    .child("offers")
+                    .child("offersDepartaments")
                     .child(offer.getCity())
+                    .child(offer.getDepartamentId())
                     .child(StringUtils.normalizer(title))
                     .child(offer.getId())
                     .removeValue()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) { updateOffer(offer, publish); }
-                    }).addOnFailureListener(new OnFailureListener() {
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
@@ -193,14 +193,16 @@ public class MedicineManagerModel implements FirebaseImageTask.Model {
         map.put(offer.getId(), offer);
 
         firebaseDatabase.getReference()
-                .child("offers")
+                .child("offersDepartaments")
                 .child(offer.getCity())
+                .child(offer.getDepartamentId())
                 .child(StringUtils.normalizer(offer.getTitle()))
                 .updateChildren(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        setHint(offer.getCity(), offer.getTitle());
                         model.onPublishMedicineSuccess(offer);
 
                     }
@@ -212,6 +214,27 @@ public class MedicineManagerModel implements FirebaseImageTask.Model {
 
                     }
                 });
+    }
+
+    public void setHint(String city, String title){
+
+        firebaseDatabase.getReference()
+                .child("searchHint")
+                .child(city)
+                .child(StringUtils.normalizer(title))
+                .child("title")
+                .setValue(title)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("this", "new Hint");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("this", "failed Hint");
+            }
+        });
     }
 
     @Override

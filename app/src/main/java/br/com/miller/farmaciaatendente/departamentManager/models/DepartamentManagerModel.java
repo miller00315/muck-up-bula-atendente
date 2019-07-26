@@ -1,6 +1,7 @@
 package br.com.miller.farmaciaatendente.departamentManager.models;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -77,14 +78,16 @@ public class DepartamentManagerModel {
     public void depublishOffer(final Offer offer){
 
         firebaseDatabase.getReference()
-                .child("offers")
+                .child("offersDepartaments")
                 .child(offer.getCity())
+                .child(offer.getDepartamentId())
                 .child(StringUtils.normalizer(offer.getTitle()))
                 .child(offer.getId())
                 .removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
                         model.onDespublishSuccess(offer);
                     }
                 })
@@ -96,6 +99,27 @@ public class DepartamentManagerModel {
                 });
     }
 
+    public void setHint(String city, String title){
+
+        firebaseDatabase.getReference()
+                .child("searchHint")
+                .child(city)
+                .child(StringUtils.normalizer(title))
+                .child("title")
+                .setValue(title)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.w("this", "new Hint");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("this", "failed Hint");
+                    }
+                });
+    }
+
     public void publishOffer(final Offer offer){
 
         Map<String, Object> map = new HashMap<>();
@@ -103,14 +127,16 @@ public class DepartamentManagerModel {
         map.put(offer.getId(), offer);
 
         firebaseDatabase.getReference()
-                .child("offers")
+                .child("offersDepartaments")
                 .child(offer.getCity())
+                .child(offer.getDepartamentId())
                 .child(StringUtils.normalizer(offer.getTitle()))
                 .updateChildren(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        setHint(offer.getCity(), offer.getTitle());
                         model.onMedicinePublishSucces(offer);
 
                     }
