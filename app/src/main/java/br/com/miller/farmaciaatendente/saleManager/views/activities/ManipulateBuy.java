@@ -1,5 +1,10 @@
 package br.com.miller.farmaciaatendente.saleManager.views.activities;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,11 +28,12 @@ import br.com.miller.farmaciaatendente.saleManager.tasks.ManipulateBuyTask;
 import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
 import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
+import br.com.miller.farmaciaatendente.utils.presenters.Permissions;
 
 public class ManipulateBuy extends AppCompatActivity implements
         ManipulateBuyTask.Presenter,
         RecyclerItem.OnAdapterInteract,
-        EditTextDialogFragment.AlertOptionsResult{
+        EditTextDialogFragment.AlertOptionsResult {
 
     private Bundle bundle;
     private ManipulateBuyPresenter manipulateBuyPresenter;
@@ -41,7 +47,7 @@ public class ManipulateBuy extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manipulate_buy);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
@@ -60,7 +66,7 @@ public class ManipulateBuy extends AppCompatActivity implements
         bindViews();
     }
 
-    private void bindViews(){
+    private void bindViews() {
 
         payMode = findViewById(R.id.pay_mode);
         clientName = findViewById(R.id.name_client);
@@ -81,7 +87,7 @@ public class ManipulateBuy extends AppCompatActivity implements
 
         recyclerViewManipulateBuy.setAdapter(manipulateBuyRecyclerAdapter);
 
-        if(bundle != null)
+        if (bundle != null)
             manipulateBuyPresenter.getBuy(bundle.getString("city"), bundle.getString("storeId"), bundle.getString("buyId"), bundle.getString("status"));
     }
 
@@ -95,9 +101,9 @@ public class ManipulateBuy extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
-            case R.id.chat_icon :{
+            case R.id.chat_icon: {
 
                 Bundle bundle = new Bundle();
 
@@ -114,7 +120,7 @@ public class ManipulateBuy extends AppCompatActivity implements
                 break;
             }
 
-            case android.R.id.home:{
+            case android.R.id.home: {
 
                 finish();
 
@@ -132,7 +138,7 @@ public class ManipulateBuy extends AppCompatActivity implements
     @Override
     public void onBuyDataSuccess(Buy buy) {
 
-        if(!this.isDestroyed()){
+        if (!this.isDestroyed()) {
 
             addressClient.setText(buy.getAddress());
             clientName.setText(buy.getUserName());
@@ -140,20 +146,20 @@ public class ManipulateBuy extends AppCompatActivity implements
             totalValue.setText(StringUtils.doubleToMonetaryString(buy.getTotalValue()));
             phoneCliente.setText(buy.getUserPhone() != null ? buy.getUserPhone() : "");
 
-            if(buy.getPayMode() == 1){
+            if (buy.getPayMode() == 1) {
 
                 payMode.setText("Dinheiro");
 
-            }else if(buy.getPayMode() == 2){
+            } else if (buy.getPayMode() == 2) {
 
                 payMode.setText("Cartão");
             }
 
             manipulateBuyRecyclerAdapter.setOffers(buy.getOffers());
 
-            switch (buy.getStatus()){
+            switch (buy.getStatus()) {
 
-                case "news":{
+                case "news": {
 
                     sendBuy.setVisibility(View.VISIBLE);
                     cancelBuy.setVisibility(View.VISIBLE);
@@ -162,7 +168,7 @@ public class ManipulateBuy extends AppCompatActivity implements
                     break;
                 }
 
-                case "sended":{
+                case "sended": {
 
                     sendBuy.setVisibility(View.INVISIBLE);
                     cancelBuy.setVisibility(View.VISIBLE);
@@ -209,19 +215,42 @@ public class ManipulateBuy extends AppCompatActivity implements
     }
 
     @Override
-    public void onChangeFailed() { Toast.makeText(this, "Algum erro ocorreu, tente novamente", Toast.LENGTH_SHORT).show(); };
+    public void onChangeFailed() {
+        Toast.makeText(this, "Algum erro ocorreu, tente novamente", Toast.LENGTH_SHORT).show();
+    }
 
-    public void sendBuy(View view) { manipulateBuyPresenter.sendBuyToSended(); }
+    ;
 
-    public void cancelBuy(View view) { manipulateBuyPresenter.sendBuyToCanceled(); }
+    public void sendBuy(View view) {
+        manipulateBuyPresenter.sendBuyToSended();
+    }
+
+    public void cancelBuy(View view) {
+        manipulateBuyPresenter.sendBuyToCanceled();
+    }
 
     @Override
-    public void onAdapterInteract(Bundle bundle) { }
+    public void onAdapterInteract(Bundle bundle) {
+    }
 
-    public void receiveBuy(View view) { manipulateBuyPresenter.sendBuyToReceived(); }
+    public void receiveBuy(View view) {
+        manipulateBuyPresenter.sendBuyToReceived();
+    }
 
     @Override
     public void onEditTextDialogFragmentResult(Bundle bundle) {
 
+    }
+
+    public void callClient(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:".concat(phoneCliente.getText().toString())));
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Não temos permissão para acessa o telefone", Toast.LENGTH_SHORT).show();
+        }else {
+            startActivity(intent);
+        }
     }
 }
