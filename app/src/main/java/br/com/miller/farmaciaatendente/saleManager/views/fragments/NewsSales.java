@@ -92,7 +92,7 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
 
         if(this.isVisible()){
 
-            if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
+        //    if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
             recyclerViewNewsSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }

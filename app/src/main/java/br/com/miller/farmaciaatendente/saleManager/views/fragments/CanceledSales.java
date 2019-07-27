@@ -91,7 +91,7 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
 
         if(this.isVisible()){
 
-            if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
+         //   if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
 
             recyclerViewCanceledSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);

@@ -20,6 +20,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <service android:name=".jobs.FirebaseJobs"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
         <activity android:name=".departamentManager.view.MedicineManager" />
         <activity android:name=".departamentManager.view.DepartamentManager" />
         <activity android:name=".saleManager.views.activities.ManipulateBuy" />

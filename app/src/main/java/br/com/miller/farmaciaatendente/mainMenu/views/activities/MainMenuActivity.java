@@ -14,6 +14,13 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +28,7 @@ import br.com.miller.farmaciaatendente.R;
 import br.com.miller.farmaciaatendente.departamentManager.view.DepartamentManager;
 import br.com.miller.farmaciaatendente.departamentManager.view.MedicineManager;
 import br.com.miller.farmaciaatendente.domain.User;
+import br.com.miller.farmaciaatendente.jobs.FirebaseJobs;
 import br.com.miller.farmaciaatendente.mainMenu.adapters.MainMenuPageAdapter;
 import br.com.miller.farmaciaatendente.mainMenu.presenters.MainMenuPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.tasks.MainMenuTasks;
@@ -44,6 +52,7 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
     private MainMenuPresenter mainMenuPresenter;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
+    private FirebaseJobDispatcher dispatcher;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,6 +86,8 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
 
         setSupportActionBar(toolbar);
 
+        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(getApplicationContext()));
+
         sharedPreferences = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE);
 
         Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.ic_launcher_foreground);
@@ -94,6 +105,30 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
         MainMenuPageAdapter mainMenuPageAdapter = new MainMenuPageAdapter(getSupportFragmentManager(), 4, this, getUserData(sharedPreferences));
 
         viewPager.setAdapter(mainMenuPageAdapter);
+
+        startJob();
+    }
+
+    public void startJob(){
+
+        Bundle bundle = new Bundle();
+
+        bundle.putString("city", getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE).getString(Constants.USER_CITY, ""));
+        bundle.putString("storeId", getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE).getString(Constants.STORE_ID, ""));
+
+        Job job = dispatcher.newJobBuilder()
+                .setService(FirebaseJobs.class)
+                .setTag(FirebaseJobs.ID)
+                .setRecurring(true)
+                .setLifetime(Lifetime.FOREVER)
+                .setTrigger(Trigger.executionWindow(0, 60))
+                .setReplaceCurrent(false)
+                .setExtras(bundle)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .build();
+
+        dispatcher.mustSchedule(job);
+
     }
 
     private Bundle getUserData(SharedPreferences sharedPreferences){

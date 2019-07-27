@@ -18,6 +18,7 @@ import br.com.miller.farmaciaatendente.main.MainActivityTasks;
 import br.com.miller.farmaciaatendente.main.presenters.MainActivityPresenter;
 import br.com.miller.farmaciaatendente.mainMenu.views.activities.MainMenuActivity;
 import br.com.miller.farmaciaatendente.utils.Constants;
+import br.com.miller.farmaciaatendente.utils.NotifiactionUtils;
 import br.com.miller.farmaciaatendente.utils.presenters.Permissions;
 import br.com.miller.farmaciaatendente.utils.tasks.PermissionsTask;
 
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements PermissionsTask.P
 
         Permissions permissions = new Permissions(this, this);
         mainActivityPresenter = new MainActivityPresenter(this);
+
+        NotifiactionUtils.createNotificationChannel(getApplicationContext());
 
         permissions.checkSelfPermission();
     }

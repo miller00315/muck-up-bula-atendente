@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
         if(this.isVisible()){
 
-            if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
+          //  if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
             recyclerViewReceivedSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }
@@ -93,7 +94,8 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
     @Override
     public void onBuysDataFailed() {
         recyclerAdapterSolicitations.clear();
-        recyclerViewReceivedSales.setVisibility(View.INVISIBLE);}
+        recyclerViewReceivedSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onNoStore() { recyclerViewReceivedSales.setVisibility(View.INVISIBLE); }
