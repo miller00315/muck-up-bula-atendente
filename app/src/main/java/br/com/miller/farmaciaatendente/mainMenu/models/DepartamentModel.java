@@ -42,7 +42,7 @@ public class DepartamentModel {
 
                 for(DataSnapshot child : dataSnapshot.getChildren()){
 
-                    departaments.add(child.getValue(Departament.class));
+                    departaments.add(new Departament(child.getValue()));
 
                 }
 

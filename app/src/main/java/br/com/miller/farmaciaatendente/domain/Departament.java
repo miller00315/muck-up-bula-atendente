@@ -60,6 +60,7 @@ public class Departament implements Parcelable {
             HashMap hashMap = (HashMap) o;
 
             this.city = Objects.requireNonNull(hashMap.get("city")).toString();
+            if(hashMap.containsKey("idStore"))
             this.idStore = Objects.requireNonNull(hashMap.get("idStore")).toString();
             this.title = Objects.requireNonNull(hashMap.get("title")).toString();
             this.id = Objects.requireNonNull(hashMap.get("id")).toString();

@@ -25,6 +25,15 @@ public class Buy implements Parcelable {
     private String address;
     private String observations;
     private String status;
+    private String userPhone;
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
 
     public String getStatus() { return status; }
 

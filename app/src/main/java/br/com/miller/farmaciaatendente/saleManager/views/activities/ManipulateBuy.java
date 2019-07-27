@@ -31,7 +31,7 @@ public class ManipulateBuy extends AppCompatActivity implements
 
     private Bundle bundle;
     private ManipulateBuyPresenter manipulateBuyPresenter;
-    private TextView payMode, observationClient, addressClient, clientName, totalValue;
+    private TextView payMode, observationClient, addressClient, clientName, totalValue, phoneCliente;
     private ManipulateBuyRecyclerAdapter manipulateBuyRecyclerAdapter;
     private RecyclerView recyclerViewManipulateBuy;
     private Button sendBuy, receiveBuy, cancelBuy;
@@ -71,6 +71,7 @@ public class ManipulateBuy extends AppCompatActivity implements
         sendBuy = findViewById(R.id.button_sended);
         receiveBuy = findViewById(R.id.button_received);
         cancelBuy = findViewById(R.id.button_cancel);
+        phoneCliente = findViewById(R.id.phone_client);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -137,6 +138,7 @@ public class ManipulateBuy extends AppCompatActivity implements
             clientName.setText(buy.getUserName());
             observationClient.setText(buy.getObservations() != null ? buy.getObservations() : "");
             totalValue.setText(StringUtils.doubleToMonetaryString(buy.getTotalValue()));
+            phoneCliente.setText(buy.getUserPhone() != null ? buy.getUserPhone() : "");
 
             if(buy.getPayMode() == 1){
 
