@@ -25,6 +25,7 @@ import br.com.miller.farmaciaatendente.utils.Constants;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
 import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
 import br.com.miller.farmaciaatendente.utils.alerts.ImageDialogFragment;
+import br.com.miller.farmaciaatendente.utils.alerts.OpinionsDialogFragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -184,6 +185,19 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
                 bundle.putString("text", storePerfilPresenter.getStore().getTime());
 
                 openAlert(bundle);
+
+            }
+        });
+
+        storeClassification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                OpinionsDialogFragment opinionsDialogFragment = OpinionsDialogFragment.newInstance(getArguments());
+
+                opinionsDialogFragment.setItems(getContext());
+
+                opinionsDialogFragment.openDialog(getFragmentManager());
 
             }
         });

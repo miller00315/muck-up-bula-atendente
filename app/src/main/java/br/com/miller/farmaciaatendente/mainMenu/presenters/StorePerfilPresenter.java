@@ -100,7 +100,7 @@ public class StorePerfilPresenter implements StorePerfilTasks.Model, StorePerfil
     }
 
     @Override
-    public void downloadImage(String type, String city, String image) { storePerfilModel.downloadImage(type, city, image);}
+    public void downloadImage(String type, String city, String image) { storePerfilModel.downloadImage(type, city, image.concat(".jpg"));}
 
     @Override
     public void uploadImage(String type, String city, String image, Bitmap bitmap) {

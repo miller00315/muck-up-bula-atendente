@@ -83,6 +83,8 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
         if(this.isVisible()){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
             recyclerViewReceivedSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }

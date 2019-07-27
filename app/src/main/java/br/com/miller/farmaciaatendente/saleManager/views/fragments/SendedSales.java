@@ -89,6 +89,9 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
         if(this.isVisible()){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
+
             recyclerViewSendedSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }
