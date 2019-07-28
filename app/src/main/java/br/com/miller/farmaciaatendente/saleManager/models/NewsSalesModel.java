@@ -2,6 +2,7 @@ package br.com.miller.farmaciaatendente.saleManager.models;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +40,24 @@ public class NewsSalesModel {
                 .child("stores")
                 .child(storeId)
                 .child("news")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()) model.onBuysDataFailed();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        firebaseDatabase.getReference()
+                .child("buys")
+                .child(city)
+                .child("stores")
+                .child(storeId)
+                .child("news")
                 .addChildEventListener(newsEventListener);
     }
 
@@ -64,10 +83,14 @@ public class NewsSalesModel {
                 buys.add(dataSnapshot.getValue(Buy.class));
                 model.onBuysDataSuccess(buys);
             }
+
+
         }
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
 
         }
 

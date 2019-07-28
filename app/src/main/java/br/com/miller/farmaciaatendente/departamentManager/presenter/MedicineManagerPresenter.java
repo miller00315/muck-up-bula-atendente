@@ -76,7 +76,7 @@ public class MedicineManagerPresenter implements MedicineManagerTasks.View, Medi
         if(name.isEmpty()){
 
             flag  = false;
-
+            presenter.onUpdateDataFailed(1);
         }
 
         if(description.isEmpty()){
@@ -85,16 +85,17 @@ public class MedicineManagerPresenter implements MedicineManagerTasks.View, Medi
         }
 
         if(indication.isEmpty()){
-
+            presenter.onUpdateDataFailed(2);
             flag = false;
         }
 
         if(noIndication.isEmpty()){
-
+            presenter.onUpdateDataFailed(3);
             flag = false;
         }
 
         if(value.isEmpty()){
+            presenter.onUpdateDataFailed(4);
 
             flag = false;
         }
@@ -106,8 +107,6 @@ public class MedicineManagerPresenter implements MedicineManagerTasks.View, Medi
                 e.printStackTrace();
                 presenter.onUpdateDataFailed(0);
             }
-        }else{
-            presenter.onUpdateDataFailed(0);
         }
     }
 
@@ -117,27 +116,27 @@ public class MedicineManagerPresenter implements MedicineManagerTasks.View, Medi
         boolean flag = true;
 
         if(name.isEmpty()){
-
+            presenter.onUpdateDataFailed(1);
             flag  = false;
         }
 
         if(description.isEmpty()){
-
+            presenter.onUpdateDataFailed(1);
             flag = false;
         }
 
         if(indication.isEmpty()){
-
+            presenter.onUpdateDataFailed(3);
             flag = false;
         }
 
         if(noIndication.isEmpty()){
-
+            presenter.onUpdateDataFailed(4);
             flag = false;
         }
 
         if(value.isEmpty()){
-
+            presenter.onUpdateDataFailed(5);
             flag = false;
         }
 
@@ -148,8 +147,6 @@ public class MedicineManagerPresenter implements MedicineManagerTasks.View, Medi
                 e.printStackTrace();
                 presenter.onUpdateDataFailed(0);
             }
-        }else{
-            presenter.onUpdateDataFailed(0);
         }
 
     }

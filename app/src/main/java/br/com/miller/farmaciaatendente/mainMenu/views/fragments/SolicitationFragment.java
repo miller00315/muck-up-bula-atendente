@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     private Button managerBuy;
     private RecyclerView recyclerView;
     private User user;
+    private RelativeLayout loadingLayout, mainLayout;
 
     public SolicitationFragment() { }
 
@@ -49,6 +51,8 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
         recyclerAdapterSolicitations = new RecyclerAdapterSolicitations(this, getContext());
 
         solicitationPresenter.getSolicitations(user);
+
+
     }
 
     @Override
@@ -58,15 +62,35 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
 
         recyclerView = view.findViewById(R.id.recycler_solicitation_fragment);
         managerBuy = view.findViewById(R.id.manager_buy_button);
+        loadingLayout = view.findViewById(R.id.layout_loading);
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        showLoading();
 
         bindViews();
 
         return view;
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
     private void bindViews(){
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        if (recyclerAdapterSolicitations != null){
+
+            if(recyclerAdapterSolicitations.getItemCount()  > 0)
+                hideLoading();
+        }
 
         recyclerView.setHasFixedSize(true);
 
@@ -113,22 +137,24 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
-     //   if(this.isVisible()){
 
+            hideLoading();
             recyclerView.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
-       // }
+
     }
 
     @Override
     public void onBuysDataFailed() {
         Toast.makeText(getContext(), "Não existem compras a serem apresentadas", Toast.LENGTH_SHORT).show();
+        hideLoading();
         recyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onNoStore() {
         Toast.makeText(getContext(), "Você não possui loja vinculada", Toast.LENGTH_SHORT).show();
+        hideLoading();
         recyclerView.setVisibility(View.INVISIBLE);}
 
     public interface OnFragmentInteractionListener {

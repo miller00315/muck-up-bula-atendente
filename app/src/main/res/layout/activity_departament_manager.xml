@@ -10,10 +10,11 @@
     <include layout="@layout/action_bar_general"/>
 
     <RelativeLayout
+        android:id="@+id/main_layout"
         android:layout_marginTop="?attr/actionBarSize"
         android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_departament_manager"
@@ -21,18 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:onClick="addMedicine"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="40dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_add_white_24dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
 
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        android:onClick="addMedicine"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="40dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add_white_24dp"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+    <include layout="@layout/layout_loading"/>
 
 </RelativeLayout>

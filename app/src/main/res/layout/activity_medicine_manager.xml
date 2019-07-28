@@ -256,4 +256,6 @@
 
     </ScrollView>
 
+    <include layout="@layout/layout_loading"/>
+
 </RelativeLayout>

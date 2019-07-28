@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import br.com.miller.farmaciaatendente.R;
@@ -14,6 +15,7 @@ public class RecoveryPasswordActivity extends AppCompatActivity implements Recov
 
     private RecoveryPasswordPresenter recoveryPasswordPresenter;
     private EditText email;
+    private RelativeLayout mainLayout, loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,9 @@ public class RecoveryPasswordActivity extends AppCompatActivity implements Recov
 
         recoveryPasswordPresenter = new RecoveryPasswordPresenter(this);
 
+        mainLayout = findViewById(R.id.main_layout);
+        loadingLayout = findViewById(R.id.layout_loading);
+
         bindViews();
     }
 
@@ -29,11 +34,25 @@ public class RecoveryPasswordActivity extends AppCompatActivity implements Recov
 
     public void reset(View view) {
 
+        showLoading();
         recoveryPasswordPresenter.resetPassword(email.getText().toString());
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
     @Override
-    public void emailEmpty() { email.setHintTextColor(getResources().getColor(R.color.colorRed));}
+    public void emailEmpty() {
+        hideLoading();
+        email.setHintTextColor(getResources().getColor(R.color.colorRed));
+    }
 
     @Override
     public void onRecoverySuccess() {

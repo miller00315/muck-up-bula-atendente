@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +30,8 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     private RecyclerAdapterSolicitations recyclerAdapterSolicitations;
     private User user;
     private RecyclerView recyclerViewNewsSales;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     public NewsSales() {
         // Required empty public constructor
@@ -53,12 +57,25 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
 
         recyclerViewNewsSales = view.findViewById(R.id.recycler_view_news_sales);
 
+        loadingLayout = view.findViewById(R.id.layout_loading);
+
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        showLoading();
+
         bindViews();
 
         return view;
     }
 
     private void bindViews(){
+
+        if(recyclerAdapterSolicitations != null){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0){
+                hideLoading();
+            }
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -67,6 +84,16 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
         recyclerViewNewsSales.setHasFixedSize(true);
 
         recyclerViewNewsSales.setAdapter(recyclerAdapterSolicitations);
+    }
+
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -90,9 +117,10 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
+        hideLoading();
+
         if(this.isVisible()){
 
-        //    if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
             recyclerViewNewsSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }
@@ -102,11 +130,16 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     @Override
     public void onBuysDataFailed() {
 
+        hideLoading();
         recyclerAdapterSolicitations.clear();
-        recyclerViewNewsSales.setVisibility(View.INVISIBLE);}
+        recyclerViewNewsSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
-    public void onNoStore() { recyclerViewNewsSales.setVisibility(View.INVISIBLE);}
+    public void onNoStore() {
+        hideLoading();
+        recyclerViewNewsSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onAdapterInteract(Bundle bundle) { mListener.onFragmentInteraction(bundle); }

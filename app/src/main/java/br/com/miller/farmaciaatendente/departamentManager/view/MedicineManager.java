@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +42,8 @@ public class MedicineManager extends AppCompatActivity implements
     private ImageView medicineImage;
     private EditText medicineName, medicineDescription, medicineIndication, medicineNoIndication, medicineValue, medicineActive;
     private boolean isNewMedicine = false;
+    private RelativeLayout layoutLoading;
+    private ScrollView mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +79,23 @@ public class MedicineManager extends AppCompatActivity implements
 
         medicineValue.addTextChangedListener(new MoneyTextWatcher(medicineValue, Locale.getDefault()));
 
+        layoutLoading = findViewById(R.id.layout_loading);
+        mainLayout = findViewById(R.id.main_layout);
+
+        showLoading();
+
         medicineManagerPresenter.setData(bundle);
 
+    }
+
+    private void showLoading(){
+        layoutLoading.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        layoutLoading.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -127,6 +146,8 @@ public class MedicineManager extends AppCompatActivity implements
 
         isNewMedicine = false;
 
+        hideLoading();
+
         setView(offer);
 
         medicineManagerPresenter.downloadImage("offers", offer.getCity(), offer.getImage());
@@ -134,6 +155,8 @@ public class MedicineManager extends AppCompatActivity implements
     }
 
     void setView(Offer offer){
+
+        hideLoading();
 
         medicineIndication.setText(offer.getIndication());
         medicineName.setText(offer.getTitle());
@@ -147,12 +170,14 @@ public class MedicineManager extends AppCompatActivity implements
 
     @Override
     public void onMedicineDataFailed() {
+        hideLoading();
         Toast.makeText(this, "Erro ao obter os dados sobre o produto", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onUpdateMedicineSuccess(Offer offer) {
+        hideLoading();
         isNewMedicine = false;
         this.setView(offer);
         medicineManagerPresenter.uploadImage("offers", offer.getCity(), offer.getImage(), ImageUtils.getImageFormImageView(medicineImage));
@@ -160,45 +185,46 @@ public class MedicineManager extends AppCompatActivity implements
 
     @Override
     public void onUpdateMedicineFailed() {
+        hideLoading();
         Toast.makeText(this, "Erro ao tentar atualizar o produto, tente novamente", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpdateDataFailed(int type) {
 
+        hideLoading();
+
+        Toast.makeText(this, "Verifique os dados", Toast.LENGTH_SHORT).show();
+
         switch (type){
 
             case 0:{
-
+                Toast.makeText(this, "Erro ao tratar dados, tente novamente", Toast.LENGTH_SHORT).show();
                 break;
             }
 
             case 1: {
-
+                medicineName.setHintTextColor(getResources().getColor(R.color.colorRed));
                 break;
             }
 
             case 2:{
-
+                medicineDescription.setHintTextColor(getResources().getColor(R.color.colorRed));
                 break;
             }
 
             case 3: {
-
+                medicineIndication.setHintTextColor(getResources().getColor(R.color.colorRed));
                 break;
             }
 
             case 4:{
-
+                medicineNoIndication.setHintTextColor(getResources().getColor(R.color.colorRed));
                 break;
             }
 
             case 5: {
-
-                break;
-            }
-            case 6:{
-
+                medicineValue.setHintTextColor(getResources().getColor(R.color.colorRed));
                 break;
             }
 
@@ -222,10 +248,14 @@ public class MedicineManager extends AppCompatActivity implements
     public void onImageDownloadSuccess(Bitmap bitmap) { medicineImage.setImageBitmap(bitmap); }
 
     @Override
-    public void onPublishMedicineSuccess(Offer offer) { Toast.makeText( this, "Medicamento publicado com sucesso", Toast.LENGTH_SHORT).show(); }
+    public void onPublishMedicineSuccess(Offer offer) {
+        hideLoading();
+        Toast.makeText( this, "Medicamento publicado com sucesso", Toast.LENGTH_SHORT).show(); }
 
     @Override
-    public void onPublishMedicineFailed() { Toast.makeText(this, "Erro ao publicar o medicamento, tente novament", Toast.LENGTH_SHORT).show(); }
+    public void onPublishMedicineFailed() {
+        hideLoading();
+        Toast.makeText(this, "Erro ao publicar o medicamento, tente novament", Toast.LENGTH_SHORT).show(); }
 
     @Override
     public void onImageDownloadFailed() { }
@@ -238,6 +268,7 @@ public class MedicineManager extends AppCompatActivity implements
 
     public void save(View view) {
 
+
         AlertOptionsMedicineManager alertOptionsMedicineManager = AlertOptionsMedicineManager.newInstance(bundle);
 
         alertOptionsMedicineManager.setListener(this);
@@ -248,6 +279,8 @@ public class MedicineManager extends AppCompatActivity implements
 
     @Override
     public void onAlertOptionResult(Bundle bundle, int type) {
+
+        showLoading();
 
         switch (type){
 

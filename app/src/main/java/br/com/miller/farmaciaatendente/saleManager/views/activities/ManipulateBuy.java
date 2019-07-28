@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class ManipulateBuy extends AppCompatActivity implements
     private ManipulateBuyRecyclerAdapter manipulateBuyRecyclerAdapter;
     private RecyclerView recyclerViewManipulateBuy;
     private Button sendBuy, receiveBuy, cancelBuy;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,17 @@ public class ManipulateBuy extends AppCompatActivity implements
         bindViews();
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
+
     private void bindViews() {
 
         payMode = findViewById(R.id.pay_mode);
@@ -78,6 +93,8 @@ public class ManipulateBuy extends AppCompatActivity implements
         receiveBuy = findViewById(R.id.button_received);
         cancelBuy = findViewById(R.id.button_cancel);
         phoneCliente = findViewById(R.id.phone_client);
+        loadingLayout = findViewById(R.id.layout_loading);
+        mainLayout = findViewById(R.id.main_layout);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -86,6 +103,8 @@ public class ManipulateBuy extends AppCompatActivity implements
         recyclerViewManipulateBuy.setHasFixedSize(true);
 
         recyclerViewManipulateBuy.setAdapter(manipulateBuyRecyclerAdapter);
+
+        showLoading();
 
         if (bundle != null)
             manipulateBuyPresenter.getBuy(bundle.getString("city"), bundle.getString("storeId"), bundle.getString("buyId"), bundle.getString("status"));
@@ -139,6 +158,8 @@ public class ManipulateBuy extends AppCompatActivity implements
     public void onBuyDataSuccess(Buy buy) {
 
         if (!this.isDestroyed()) {
+
+            hideLoading();
 
             addressClient.setText(buy.getAddress());
             clientName.setText(buy.getUserName());
@@ -204,11 +225,13 @@ public class ManipulateBuy extends AppCompatActivity implements
 
     @Override
     public void onBuyDataFailed() {
-
+        hideLoading();
     }
 
     @Override
     public void onChangeSucces(Buy buy) {
+
+        hideLoading();
 
         Toast.makeText(this, "Compra atualizada com sucesso", Toast.LENGTH_SHORT).show();
         finish();
@@ -216,16 +239,19 @@ public class ManipulateBuy extends AppCompatActivity implements
 
     @Override
     public void onChangeFailed() {
+        hideLoading();
         Toast.makeText(this, "Algum erro ocorreu, tente novamente", Toast.LENGTH_SHORT).show();
     }
 
     ;
 
     public void sendBuy(View view) {
+        showLoading();
         manipulateBuyPresenter.sendBuyToSended();
     }
 
     public void cancelBuy(View view) {
+        showLoading();
         manipulateBuyPresenter.sendBuyToCanceled();
     }
 
@@ -234,6 +260,8 @@ public class ManipulateBuy extends AppCompatActivity implements
     }
 
     public void receiveBuy(View view) {
+        showLoading();
+
         manipulateBuyPresenter.sendBuyToReceived();
     }
 

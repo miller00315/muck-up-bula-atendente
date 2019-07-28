@@ -8,6 +8,7 @@
     <include layout="@layout/action_bar_general"/>
 
     <ScrollView
+        android:id="@+id/main_layout"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -266,5 +267,7 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <include layout="@layout/layout_loading"/>
 
 </RelativeLayout>

@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".login.view.Login">
 
-
-
     <ScrollView
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
@@ -104,5 +102,6 @@
 
     </ScrollView>
 
+    <include layout="@layout/layout_loading"/>
 
 </RelativeLayout>

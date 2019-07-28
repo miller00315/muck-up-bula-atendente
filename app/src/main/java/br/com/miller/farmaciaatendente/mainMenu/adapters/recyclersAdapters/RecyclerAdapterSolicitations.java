@@ -87,6 +87,8 @@ public class RecyclerAdapterSolicitations extends RecyclerItem {
 
 
     public void setBuys(ArrayList<Buy> buys) {
+
+
         this.buys = buys;
         notifyDataSetChanged();
     }

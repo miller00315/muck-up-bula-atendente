@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,7 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
     private RecyclerAdapterDepartament recyclerAdapterDepartament;
     private RecyclerView recyclerViewDepatament;
     private FloatingActionButton floatingActionButton;
+    private RelativeLayout loadingLayout, mainLayout;
 
     public DepartamentFragment() {
         // Required empty public constructor
@@ -62,9 +65,22 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
 
         floatingActionButton = view.findViewById(R.id.floating_action_button);
 
+        loadingLayout = view.findViewById(R.id.layout_loading);
+        mainLayout = view.findViewById(R.id.main_layout);
+
         bindViews();
 
         return view;
+    }
+
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     private void bindViews(){
@@ -94,9 +110,13 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
 
     public void getDepartaments(){
 
+        showLoading();
+
         if(!user.getStoreId().isEmpty())
             departamentPresenter.getDepartaments(user.getCity(), user.getStoreId());
         else {
+
+            hideLoading();
             recyclerViewDepatament.setVisibility(View.INVISIBLE);
         }
 
@@ -127,11 +147,15 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
 
         recyclerViewDepatament.setVisibility(View.VISIBLE);
         recyclerAdapterDepartament.setDepartaments(departments);
+        hideLoading();
 
     }
 
     @Override
-    public void onDepartamentsFailed() { recyclerViewDepatament.setVisibility(View.INVISIBLE); }
+    public void onDepartamentsFailed() {
+        hideLoading();
+        recyclerViewDepatament.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onDepartamentsAvaliablesuccess(ArrayList<Departament> departaments) {
@@ -147,12 +171,15 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
     }
 
     @Override
-    public void onDepartmentAddFailed() { Toast.makeText(getContext(), "Este departamento não pode ser adicionado, tente novamente", Toast.LENGTH_SHORT).show();}
+    public void onDepartmentAddFailed() {
+        Toast.makeText(getContext(), "Este departamento não pode ser adicionado, tente novamente", Toast.LENGTH_SHORT).show();}
 
     @Override
     public void onSpinnerDialogFragment(Bundle bundle) {
 
         if(bundle.containsKey("departament")){
+
+            showLoading();
 
             departamentPresenter.addDepartment((Departament) bundle.getParcelable("departament"),recyclerAdapterDepartament.getDepartaments(), user.getStoreId());
         }

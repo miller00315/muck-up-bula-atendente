@@ -5,30 +5,40 @@
     android:layout_height="match_parent"
     tools:context=".mainMenu.views.fragments.SolicitationFragment">
 
-    <ScrollView
-        android:padding="16dp"
+    <RelativeLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_solicitation_fragment"
+        <ScrollView
+            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            tools:listitem="@layout/view_holder_solicitation"/>
+            android:layout_height="wrap_content">
 
-    </ScrollView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_solicitation_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                tools:listitem="@layout/view_holder_solicitation"/>
 
-    <Button
-        android:id="@+id/manager_buy_button"
-        android:layout_alignParentBottom="true"
-        android:text="@string/gerenciar_vendas"
-        android:textColor="#ffffff"
-        android:background="@drawable/background_button_rounded"
-        android:layout_marginBottom="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/manager_buy_button"
+            android:layout_alignParentBottom="true"
+            android:text="@string/gerenciar_vendas"
+            android:textColor="#ffffff"
+            android:background="@drawable/background_button_rounded"
+            android:layout_marginBottom="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+    <include layout="@layout/layout_loading"/>
 
 </RelativeLayout>

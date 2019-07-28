@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +30,8 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     private RecyclerAdapterSolicitations recyclerAdapterSolicitations;
     private User user;
     private RecyclerView recyclerViewSendedSales;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     public SendedSales() {
         // Required empty public constructor
@@ -53,12 +57,35 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
 
         recyclerViewSendedSales = view.findViewById(R.id.recycler_view_sended_sales);
 
+        loadingLayout = view.findViewById(R.id.layout_loading);
+
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        showLoading();
+
         bindViews();
 
         return view;
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
     private void bindViews(){
+
+        if(recyclerAdapterSolicitations != null){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0){
+                hideLoading();
+            }
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -89,11 +116,9 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
+        hideLoading();
+
         if(this.isVisible()){
-
-        //    Log.w("teste", String.valueOf(buys.size()));
-
-          //  if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
 
             recyclerViewSendedSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
@@ -102,10 +127,16 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     }
 
     @Override
-    public void onBuysDataFailed() { recyclerViewSendedSales.setVisibility(View.INVISIBLE);}
+    public void onBuysDataFailed() {
+        hideLoading();
+        recyclerViewSendedSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
-    public void onNoStore() { recyclerViewSendedSales.setVisibility(View.INVISIBLE); }
+    public void onNoStore() {
+        hideLoading();
+        recyclerViewSendedSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onAdapterInteract(Bundle bundle) { mListener.onFragmentInteraction(bundle);}

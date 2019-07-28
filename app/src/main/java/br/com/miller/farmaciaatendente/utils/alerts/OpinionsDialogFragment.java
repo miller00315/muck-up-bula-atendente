@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +32,8 @@ public class OpinionsDialogFragment extends DialogFragment implements OpnionDial
     private static final String DIALOG_TAG = OpinionsDialogFragment.class.getName();
 
     private OpinionStoreRecyclerAdapter opinionStoreRecyclerAdapter;
+
+    private RelativeLayout mainLayout, loadingLayout;
 
     public static OpinionsDialogFragment newInstance(Bundle bundle){
 
@@ -67,6 +70,10 @@ public class OpinionsDialogFragment extends DialogFragment implements OpnionDial
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_opinion);
 
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        loadingLayout = view.findViewById(R.id.layout_loading);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -84,17 +91,33 @@ public class OpinionsDialogFragment extends DialogFragment implements OpnionDial
             }
         });
 
+        showLoading();
 
         return view;
 
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
-    public void onGetEvaluateSuccess(ArrayList<Evaluate> evaluates) { opinionStoreRecyclerAdapter.setEvaluates(evaluates); }
+    public void onGetEvaluateSuccess(ArrayList<Evaluate> evaluates) {
+        hideLoading();
+        opinionStoreRecyclerAdapter.setEvaluates(evaluates); }
 
     @Override
-    public void onGetEvaluateFailed() { dismiss(); }
+    public void onGetEvaluateFailed() {
+        hideLoading();
+        dismiss();
+    }
 
     public void openDialog(FragmentManager fm) {
         if (fm.findFragmentByTag(DIALOG_TAG) == null) {

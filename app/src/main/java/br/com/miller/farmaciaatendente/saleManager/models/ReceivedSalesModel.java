@@ -7,6 +7,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,6 +28,24 @@ public class ReceivedSalesModel {
     }
 
     public void getReceivedBuys(String storeId, String city){
+
+        firebaseDatabase.getReference()
+                .child("buys")
+                .child(city)
+                .child("stores")
+                .child(storeId)
+                .child("received")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()) model.onBuysDataFailed();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         firebaseDatabase.getReference()
                 .child("buys")

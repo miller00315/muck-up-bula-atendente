@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ public class PersonalPerfilFragment extends Fragment implements PersonalPerfilTa
     private ImageView imageViewUser, editImagePerfil;
     private TextView name, email, phone, address;
     public static final int ID = 222;
+    private RelativeLayout loadingLayout;
+    private ScrollView mainLayout;
 
     public PersonalPerfilFragment() {
         // Required empty public constructor
@@ -59,6 +63,8 @@ public class PersonalPerfilFragment extends Fragment implements PersonalPerfilTa
         address = view.findViewById(R.id.address_perfil);
         imageViewUser = view.findViewById(R.id.image_perfil);
         editImagePerfil = view.findViewById(R.id.edit_image_perfil);
+        loadingLayout = view.findViewById(R.id.layout_loading);
+        mainLayout = view.findViewById(R.id.main_layout);
 
         if (getArguments() != null) {
 
@@ -67,6 +73,7 @@ public class PersonalPerfilFragment extends Fragment implements PersonalPerfilTa
             if(user != null) {
                 personalPerfilPresenter.getUserData(user.getId_firebase(), user.getCity());
                 personalPerfilPresenter.downloadImage("users", user.getCity(), user.getId_firebase());
+                showLoading();
             }
 
         }
@@ -75,6 +82,17 @@ public class PersonalPerfilFragment extends Fragment implements PersonalPerfilTa
 
         return view;
     }
+
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
 
     private void bindViews(){
 
@@ -203,6 +221,8 @@ public class PersonalPerfilFragment extends Fragment implements PersonalPerfilTa
     }
 
     private void setUserdata(User user){
+
+        hideLoading();
 
         if(this.isVisible()) {
             name.setText(user.getName().concat(" ").concat(user.getSurname()));

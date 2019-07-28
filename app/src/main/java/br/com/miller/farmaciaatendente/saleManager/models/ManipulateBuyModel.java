@@ -32,7 +32,24 @@ public class ManipulateBuyModel {
 
     public void getBuy(final String city, final String storeId, final String buyId, String status){
 
-        Log.w(this.getClass().getName(), status);
+        firebaseDatabase.getReference()
+                .child("buys")
+                .child(city)
+                .child("stores")
+                .child(storeId)
+                .child(status)
+                .child(buyId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) model.onBuyDataFailed();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         firebaseDatabase.getReference()
                 .child("buys")

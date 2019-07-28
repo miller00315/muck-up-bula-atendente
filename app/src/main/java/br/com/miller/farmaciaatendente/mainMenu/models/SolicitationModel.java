@@ -37,6 +37,24 @@ public class SolicitationModel {
                 .child("stores")
                 .child(storeId)
                 .child("news")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()) model.onBuysDataFailed();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        firebaseDatabase.getReference()
+                .child("buys")
+                .child(city)
+                .child("stores")
+                .child(storeId)
+                .child("news")
                 .addChildEventListener(newsEventListener);
     }
 

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import br.com.miller.farmaciaatendente.R;
@@ -20,6 +22,8 @@ public class Login extends AppCompatActivity implements LoginTasks.Presenter {
 
     private LoginPresenter presenter;
     private EditText user, password;
+    private RelativeLayout loadingLayout;
+    private ScrollView mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,11 @@ public class Login extends AppCompatActivity implements LoginTasks.Presenter {
 
         user        = findViewById(R.id.login);
         password    = findViewById(R.id.password);
+
+        loadingLayout = findViewById(R.id.layout_loading);
+        mainLayout = findViewById(R.id.main_layout);
+
+        hideLoading();
     }
 
     public void register(View view) {
@@ -43,9 +52,23 @@ public class Login extends AppCompatActivity implements LoginTasks.Presenter {
         startActivityForResult(intent, 2222);
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
     public void recuperarSenha(View view) { startActivity(new Intent(this, RecoveryPasswordActivity.class)); }
 
-    public void login(View view) { presenter.login(user.getText().toString(), password.getText().toString()); }
+    public void login(View view) {
+
+        showLoading();
+        presenter.login(user.getText().toString(), password.getText().toString());
+    }
 
     @Override
     public void inputEmpty(int code) {
@@ -68,13 +91,20 @@ public class Login extends AppCompatActivity implements LoginTasks.Presenter {
                 break;
         }
 
+        hideLoading();
+
     }
 
     @Override
-    public void onLoginFailed() { Toast.makeText(this, "Erro ao realizar login, tente novamente", Toast.LENGTH_SHORT).show(); }
+    public void onLoginFailed() {
+        hideLoading();
+        Toast.makeText(this, "Erro ao realizar login, tente novamente", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
-    public void onAdjustDataUserFailed() { }
+    public void onAdjustDataUserFailed() {
+        hideLoading();
+    }
 
     @Override
     public void onAdjustDataUserSuccess(User user) {

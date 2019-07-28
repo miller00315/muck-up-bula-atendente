@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,8 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
     private TextView storeName, storeDescription, storeCity, storeTime, storeClassification,storeSendValue;
     private ImageView imageStore, editImageStorePerfil;
     public static final int ID = 221;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     public StorePerfilFragment() { }
 
@@ -67,25 +70,35 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
         storeTime = view.findViewById(R.id.store_time);
         imageStore = view.findViewById(R.id.image_store);
         storeClassification = view.findViewById(R.id.store_classification);
-        ScrollView scrollView = view.findViewById(R.id.main_layout);
         storeSendValue = view.findViewById(R.id.store_send_value);
         editImageStorePerfil = view.findViewById(R.id.edit_image_store_perfil);
-
-        bindViews();
+        loadingLayout = view.findViewById(R.id.layout_loading);
+        mainLayout = view.findViewById(R.id.main_layout);
 
         if(user.getStoreId() != null) {
 
             if(!user.getStoreId().isEmpty()) {
+                showLoading();
                 storePerfilPresenter.getStore(user.getStoreId(), user.getCity());
-                scrollView.setVisibility(View.VISIBLE);
+                mainLayout.setVisibility(View.VISIBLE);
             }else{
-                scrollView.setVisibility(View.INVISIBLE);
+                mainLayout.setVisibility(View.INVISIBLE);
             }
         }else{
-            scrollView.setVisibility(View.INVISIBLE);
+            mainLayout.setVisibility(View.INVISIBLE);
         }
 
         return view;
+    }
+
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     private void bindViews(){
@@ -233,6 +246,10 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
 
     private void setStoreData(Store store){
 
+        hideLoading();
+
+        bindViews();
+
         if(this.isVisible()){
 
             storeCity.setText(store.getCity());
@@ -262,7 +279,10 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
     public void onStoreDataSuccess(Store store) { setStoreData(store);}
 
     @Override
-    public void onStoreDataFailed() { Toast.makeText(getContext(), "Você não possui lojas vinculadas", Toast.LENGTH_SHORT).show(); }
+    public void onStoreDataFailed() {
+        hideLoading();
+        Toast.makeText(getContext(), "Você não possui lojas vinculadas", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onImageDownloadSuccess(Bitmap bitmap) { imageStore.setImageBitmap(bitmap); }
@@ -280,10 +300,18 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
     public void onUpdateStoreSuccess(Store store) { setStoreData(store);}
 
     @Override
-    public void onUpdateStoreFailed() { }
+    public void onUpdateStoreFailed() {
+        Toast.makeText(getContext(), "Erro ao atualizar loja, tente novamente",Toast.LENGTH_SHORT).show();
+        hideLoading();
+    }
 
     @Override
-    public void onEditTextDialogFragmentResult(Bundle bundle) { storePerfilPresenter.updateStore(bundle);}
+    public void onEditTextDialogFragmentResult(Bundle bundle) {
+
+        showLoading();
+
+        storePerfilPresenter.updateStore(bundle);
+    }
 
     @Override
     public void onImageDialogFragmentListener(Bitmap bitmap, int result) {

@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class DepartamentManager extends AppCompatActivity implements
     private RecyclerAdapterOffers recyclerAdapterOffers;
     private DepartamentManagerPresenter departamentManagerPresenter;
     private Bundle bundle;
+    private RelativeLayout layoutLoading, mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +59,22 @@ public class DepartamentManager extends AppCompatActivity implements
         departamentManagerPresenter = new DepartamentManagerPresenter(this);
         recyclerAdapterOffers = new RecyclerAdapterOffers(this, getApplicationContext());
         recyclerView = findViewById(R.id.recycler_departament_manager);
+        layoutLoading = findViewById(R.id.layout_loading);
+        mainLayout = findViewById(R.id.main_layout);
 
         setResult(RESULT_CANCELED);
 
         bindView();
+    }
+
+    private void showLoading(){
+        layoutLoading.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        layoutLoading.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     private void bindView(){
@@ -73,6 +87,7 @@ public class DepartamentManager extends AppCompatActivity implements
 
         recyclerView.setAdapter(recyclerAdapterOffers);
 
+        showLoading();
         if(bundle != null)
             departamentManagerPresenter.getDepartament(bundle.getString("departamentId"), bundle.getString("storeId"), bundle.getString("city"));
     }
@@ -133,6 +148,7 @@ public class DepartamentManager extends AppCompatActivity implements
 
     @Override
     public void onDepartamentDataSuccess(Departament departament) {
+        hideLoading();
 
         if(!this.isDestroyed()) {
 
@@ -144,6 +160,7 @@ public class DepartamentManager extends AppCompatActivity implements
 
     @Override
     public void onDepartamentDataFailed() {
+        hideLoading();
         Toast.makeText(this, "Erro ao obter o departamento, tente novamente", Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -153,6 +170,7 @@ public class DepartamentManager extends AppCompatActivity implements
 
         Toast.makeText(this, "O medicamento ".concat(offer.getTitle()).concat(" foi removido"), Toast.LENGTH_SHORT).show();
 
+        hideLoading();
         departamentManagerPresenter.getDepartament(bundle.getString("departamentId"), bundle.getString("storeId"), bundle.getString("city"));
 
         setResult(RESULT_OK);
@@ -160,19 +178,29 @@ public class DepartamentManager extends AppCompatActivity implements
     }
 
     @Override
-    public void onMedicineDeleteFailed() { Toast.makeText(this, "Erro ao excluir o medicamenot, tente novamente", Toast.LENGTH_SHORT).show(); }
+    public void onMedicineDeleteFailed() {
+        hideLoading();
+        Toast.makeText(this, "Erro ao excluir o medicamenot, tente novamente", Toast.LENGTH_SHORT).show(); }
 
     @Override
-    public void onDepublishSuccess(Offer offer) { Toast.makeText(this, "O produto foi removido das opções de busca", Toast.LENGTH_SHORT).show(); }
+    public void onDepublishSuccess(Offer offer) {
+        hideLoading();
+        Toast.makeText(this, "O produto foi removido das opções de busca", Toast.LENGTH_SHORT).show(); }
 
     @Override
-    public void onDepublishFailed() { Toast.makeText(this, "Erro ao remover produto das buscas, tente novemente", Toast.LENGTH_SHORT).show();}
+    public void onDepublishFailed() {
+        hideLoading();
+        Toast.makeText(this, "Erro ao remover produto das buscas, tente novemente", Toast.LENGTH_SHORT).show();}
 
     @Override
-    public void onMedicinePublishFailed() { Toast.makeText(this, "Erro ao publicar produto, tente novamente", Toast.LENGTH_SHORT).show(); }
+    public void onMedicinePublishFailed() {
+        hideLoading();
+        Toast.makeText(this, "Erro ao publicar produto, tente novamente", Toast.LENGTH_SHORT).show(); }
 
     @Override
-    public void onMedicinePublishSucces(Offer offer) { Toast.makeText(this, "Produto publicado com sucesso", Toast.LENGTH_SHORT).show();}
+    public void onMedicinePublishSucces(Offer offer) {
+        hideLoading();
+        Toast.makeText(this, "Produto publicado com sucesso", Toast.LENGTH_SHORT).show();}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -212,6 +240,7 @@ public class DepartamentManager extends AppCompatActivity implements
 
             case 2: {
 
+                showLoading();
                 departamentManagerPresenter.deleteOffer(recyclerAdapterOffers.getOffer(bundle.getInt("adapterPosition")));
 
                 break;
@@ -219,13 +248,14 @@ public class DepartamentManager extends AppCompatActivity implements
 
             case 3:{
 
+                showLoading();
                 departamentManagerPresenter.publishOffer(recyclerAdapterOffers.getOffer(bundle.getInt("adapterPosition")));
 
                 break;
             }
 
             case 4: {
-
+                showLoading();
                 departamentManagerPresenter.dePublishOffer(recyclerAdapterOffers.getOffer(bundle.getInt("adapterPosition")));
 
                 break;

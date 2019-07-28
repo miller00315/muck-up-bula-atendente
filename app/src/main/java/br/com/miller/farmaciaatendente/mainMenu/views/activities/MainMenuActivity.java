@@ -20,6 +20,7 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 import java.util.Objects;
@@ -178,7 +179,19 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
 
             case R.id.logout:{
 
+                dispatcher.cancelAll();
+
+                SharedPreferences.Editor editor = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE).edit();
+
+                editor.clear();
+
+                editor.apply();
+
+                FirebaseAuth.getInstance().signOut();
+
+                finish();
             }
+
 
             default:
                 break;

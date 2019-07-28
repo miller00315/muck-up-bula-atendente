@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +30,8 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     private RecyclerView recyclerViewCanceledSales;
     private CanceledSalesPresenter canceledSalesPresenter;
     private User user;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     public CanceledSales() { }
 
@@ -52,12 +56,35 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
 
         recyclerViewCanceledSales = view.findViewById(R.id.recycler_view_canceled_sales);
 
+        loadingLayout = view.findViewById(R.id.layout_loading);
+
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        showLoading();
+
         bindViews();
 
         return view;
     }
 
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
     private void bindViews(){
+
+        if(recyclerAdapterSolicitations != null){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0){
+                hideLoading();
+            }
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -89,9 +116,9 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
-        if(this.isVisible()){
+        hideLoading();
 
-         //   if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
+        if(this.isVisible()){
 
             recyclerViewCanceledSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
@@ -100,11 +127,15 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
 
     @Override
     public void onBuysDataFailed() {
+        hideLoading();
         recyclerAdapterSolicitations.clear();
         recyclerViewCanceledSales.setVisibility(View.INVISIBLE);}
 
     @Override
-    public void onNoStore() { recyclerViewCanceledSales.setVisibility(View.INVISIBLE);}
+    public void onNoStore() {
+        hideLoading();
+        recyclerViewCanceledSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onAdapterInteract(Bundle bundle) { mListener.onFragmentInteraction(bundle);}

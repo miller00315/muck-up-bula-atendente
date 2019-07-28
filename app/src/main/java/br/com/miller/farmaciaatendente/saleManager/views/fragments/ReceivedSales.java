@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +30,8 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
     private RecyclerAdapterSolicitations recyclerAdapterSolicitations;
     private User user;
     private RecyclerView recyclerViewReceivedSales;
+    private ScrollView mainLayout;
+    private RelativeLayout loadingLayout;
 
     public ReceivedSales() {}
 
@@ -51,6 +55,12 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
 
         recyclerViewReceivedSales = view.findViewById(R.id.recycler_view_received_sales);
 
+        loadingLayout = view.findViewById(R.id.layout_loading);
+
+        mainLayout = view.findViewById(R.id.main_layout);
+
+        showLoading();
+
         bindViews();
 
         return view;
@@ -58,11 +68,29 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
 
     private void bindViews(){
 
+        if(recyclerAdapterSolicitations != null){
+
+            if(recyclerAdapterSolicitations.getItemCount() > 0){
+                hideLoading();
+            }
+        }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewReceivedSales.setLayoutManager(linearLayoutManager);
         recyclerViewReceivedSales.setHasFixedSize(true);
         recyclerViewReceivedSales.setAdapter(recyclerAdapterSolicitations);
     }
+
+    private void showLoading(){
+        loadingLayout.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoading(){
+        loadingLayout.setVisibility(View.INVISIBLE);
+        mainLayout.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -83,9 +111,11 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
 
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
+
+        hideLoading();
+
         if(this.isVisible()){
 
-          //  if(recyclerAdapterSolicitations.getItemCount() > 0) recyclerAdapterSolicitations.clear();
             recyclerViewReceivedSales.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
         }
@@ -93,12 +123,16 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
 
     @Override
     public void onBuysDataFailed() {
+        hideLoading();
         recyclerAdapterSolicitations.clear();
         recyclerViewReceivedSales.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onNoStore() { recyclerViewReceivedSales.setVisibility(View.INVISIBLE); }
+    public void onNoStore() {
+        hideLoading();
+        recyclerViewReceivedSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onAdapterInteract(Bundle bundle) { mListener.onFragmentInteraction(bundle); }
