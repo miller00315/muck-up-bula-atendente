@@ -41,6 +41,14 @@ public class SolicitationPresenter implements SolicitationTasks.View, Solicitati
             solicitationModel.removeNewsEventListener(storeId, city);
     }
 
+    public void temporaryVerify(User user){
+
+        if(!user.getStoreId().isEmpty())
+            solicitationModel.temporaryVerify(user.getStoreId(), user.getCity());
+        else
+            presenter.onNoStore();
+    }
+
     @Override
     public void moveToSendedBuy(String city, String storeId, String buyId, String userId) { }
 }

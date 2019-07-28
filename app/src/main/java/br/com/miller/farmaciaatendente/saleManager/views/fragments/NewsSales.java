@@ -70,11 +70,8 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
 
     private void bindViews(){
 
-        if(recyclerAdapterSolicitations != null){
-
-            if(recyclerAdapterSolicitations.getItemCount() > 0){
-                hideLoading();
-            }
+        if(loadingLayout.getVisibility() ==View.VISIBLE){
+            presenter.temporaryVerify(user.getStoreId(), user.getCity());
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

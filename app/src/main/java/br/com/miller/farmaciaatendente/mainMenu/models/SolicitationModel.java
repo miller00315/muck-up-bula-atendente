@@ -29,7 +29,8 @@ public class SolicitationModel {
         buys = new ArrayList<>();
     }
 
-    public void getNewsBuy(String storeId, String city){
+
+    public void temporaryVerify(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")
@@ -48,6 +49,9 @@ public class SolicitationModel {
 
                     }
                 });
+    }
+
+    public void getNewsBuy(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")

@@ -27,7 +27,7 @@ public class SendedSalesModel {
         firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
-    public void getSendedBuys(String storeId, String city){
+    public void temporaryVerify(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")
@@ -46,6 +46,10 @@ public class SendedSalesModel {
 
                     }
                 });
+
+    }
+
+    public void getSendedBuys(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")

@@ -31,6 +31,10 @@ public class ReceivedSalesPresenter implements ReceivedSalesTask.Model, Received
         if(!storeId.isEmpty()) receivedSalesModel.removeReceivedListener(storeId, city);
     }
 
+    public void temporaryVerify(String storeId, String city){
+        receivedSalesModel.temporaryVerify(storeId, city);
+    }
+
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) { presenter.onBuysDataSuccess(buys);}
 

@@ -79,11 +79,9 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
 
     private void bindViews(){
 
-        if(recyclerAdapterSolicitations != null){
+        if(loadingLayout.getVisibility() == View.VISIBLE){
 
-            if(recyclerAdapterSolicitations.getItemCount() > 0){
-                hideLoading();
-            }
+            canceledSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

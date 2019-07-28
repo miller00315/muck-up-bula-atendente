@@ -68,11 +68,9 @@ public class ReceivedSales extends Fragment implements ReceivedSalesTask.Present
 
     private void bindViews(){
 
-        if(recyclerAdapterSolicitations != null){
+        if(loadingLayout.getVisibility() == View.VISIBLE){
 
-            if(recyclerAdapterSolicitations.getItemCount() > 0){
-                hideLoading();
-            }
+            presenter.temporaryVerify(user.getStoreId(), user.getCity());
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

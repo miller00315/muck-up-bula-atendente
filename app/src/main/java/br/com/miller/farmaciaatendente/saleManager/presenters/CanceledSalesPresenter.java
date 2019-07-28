@@ -32,6 +32,10 @@ public class CanceledSalesPresenter implements CanceledSaleTask.Model, CanceledS
             canceledSalesModel.removeNewsEventListener(storeId, city);
     }
 
+    public void temporaryVerify(String storeId, String city){
+        canceledSalesModel.temporaryVerify(storeId, city);
+    }
+
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) { presenter.onBuysDataSuccess(buys);}
 

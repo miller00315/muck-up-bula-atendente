@@ -36,6 +36,10 @@ public class NewsSalesPresenter implements NewsSalesTasks.Model, NewsSalesTasks.
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) { presenter.onBuysDataSuccess(buys);}
 
+    public void temporaryVerify(String storeId, String city){
+        newsSalesModel.temporaryVerify(storeId, city);
+    }
+
     @Override
     public void onBuysDataFailed() { presenter.onBuysDataFailed(); }
 }

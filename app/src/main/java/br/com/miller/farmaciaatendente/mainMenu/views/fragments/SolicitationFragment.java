@@ -86,10 +86,9 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
-        if (recyclerAdapterSolicitations != null){
+        if (loadingLayout.getVisibility() == View.VISIBLE){
 
-            if(recyclerAdapterSolicitations.getItemCount()  > 0)
-                hideLoading();
+                solicitationPresenter.temporaryVerify(user);
         }
 
         recyclerView.setHasFixedSize(true);
@@ -137,7 +136,6 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
-
             hideLoading();
             recyclerView.setVisibility(View.VISIBLE);
             recyclerAdapterSolicitations.setBuys(buys);
@@ -146,7 +144,6 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
 
     @Override
     public void onBuysDataFailed() {
-        Toast.makeText(getContext(), "Não existem compras a serem apresentadas", Toast.LENGTH_SHORT).show();
         hideLoading();
         recyclerView.setVisibility(View.INVISIBLE);
     }

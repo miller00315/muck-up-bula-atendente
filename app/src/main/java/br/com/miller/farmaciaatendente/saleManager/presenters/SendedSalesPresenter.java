@@ -36,4 +36,8 @@ public class SendedSalesPresenter implements SendedSalesTasks.Model, SendedSales
 
     @Override
     public void onBuysDataFailed() { presenter.onBuysDataFailed(); }
+
+    public void temporaryVerify(String storeId, String city){
+        sendedSalesModel.temporaryVerify(storeId, city);
+    }
 }

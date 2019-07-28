@@ -27,7 +27,7 @@ public class ReceivedSalesModel {
         buys = new ArrayList<>();
     }
 
-    public void getReceivedBuys(String storeId, String city){
+    public void temporaryVerify(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")
@@ -46,6 +46,10 @@ public class ReceivedSalesModel {
 
                     }
                 });
+
+    }
+
+    public void getReceivedBuys(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")

@@ -80,11 +80,8 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
 
     private void bindViews(){
 
-        if(recyclerAdapterSolicitations != null){
-
-            if(recyclerAdapterSolicitations.getItemCount() > 0){
-                hideLoading();
-            }
+        if(loadingLayout.getVisibility() == View.VISIBLE){
+            sendedSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

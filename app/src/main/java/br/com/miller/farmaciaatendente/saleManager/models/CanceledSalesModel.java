@@ -27,7 +27,7 @@ public class CanceledSalesModel {
         buys = new ArrayList<>();
     }
 
-    public void getNewsBuy(String storeId, String city){
+    public void temporaryVerify(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")
@@ -46,6 +46,10 @@ public class CanceledSalesModel {
 
                     }
                 });
+
+    }
+
+    public void getNewsBuy(String storeId, String city){
 
         firebaseDatabase.getReference()
                 .child("buys")
