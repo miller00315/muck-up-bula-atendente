@@ -42,4 +42,14 @@ public class CanceledSalesPresenter implements CanceledSaleTask.Model, CanceledS
     @Override
     public void onBuysDataFailed() { presenter.onBuysDataFailed(); }
 
+    @Override
+    public void onSaleAdded(Buy buy) { presenter.onSaleAdded(buy); }
+
+    @Override
+    public void onSaleUpdate(Buy buy) { presenter.onSaleUpdate(buy); }
+
+    @Override
+    public void onSaleRemoved(Buy buy) { presenter.onSalesRemoved(buy); }
+
+
 }

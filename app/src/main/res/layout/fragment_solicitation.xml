@@ -24,6 +24,8 @@
 
         </ScrollView>
 
+        <include layout="@layout/layout_alert_empty_solicitaion"/>
+
         <Button
             android:id="@+id/manager_buy_button"
             android:layout_alignParentBottom="true"
@@ -40,5 +42,7 @@
 
 
     <include layout="@layout/layout_loading"/>
+
+
 
 </RelativeLayout>

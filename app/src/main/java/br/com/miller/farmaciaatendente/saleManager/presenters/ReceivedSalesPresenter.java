@@ -40,4 +40,13 @@ public class ReceivedSalesPresenter implements ReceivedSalesTask.Model, Received
 
     @Override
     public void onBuysDataFailed() { presenter.onBuysDataFailed(); }
+
+    @Override
+    public void onSaleAdded(Buy buy) { presenter.onSaleAdded(buy); }
+
+    @Override
+    public void onSaleUpdate(Buy buy) { presenter.onSaleUpdate(buy); }
+
+    @Override
+    public void onSalesRemoved(Buy buy) { presenter.onSalesRemoved(buy); }
 }

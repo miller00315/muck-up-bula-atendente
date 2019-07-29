@@ -22,7 +22,8 @@ import br.com.miller.farmaciaatendente.mainMenu.adapters.recyclersAdapters.Recyc
 import br.com.miller.farmaciaatendente.saleManager.presenters.NewsSalesPresenter;
 import br.com.miller.farmaciaatendente.saleManager.tasks.NewsSalesTasks;
 
-public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, RecyclerAdapterSolicitations.OnAdapterInteract {
+public class NewsSales extends Fragment implements NewsSalesTasks.Presenter,
+        RecyclerAdapterSolicitations.OnAdapterInteract {
 
 
     private OnFragmentInteractionListener mListener;
@@ -32,6 +33,7 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     private RecyclerView recyclerViewNewsSales;
     private ScrollView mainLayout;
     private RelativeLayout loadingLayout;
+    private Boolean dataBaseChecked = false;
 
     public NewsSales() {
         // Required empty public constructor
@@ -68,11 +70,18 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
         return view;
     }
 
-    private void bindViews(){
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        if(loadingLayout.getVisibility() ==View.VISIBLE){
+        if(loadingLayout.getVisibility() == View.VISIBLE && dataBaseChecked)
+            hideLoading();
+        else
             presenter.temporaryVerify(user.getStoreId(), user.getCity());
-        }
+
+    }
+
+    private void bindViews(){
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -114,6 +123,7 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
+        dataBaseChecked = true;
         hideLoading();
 
         if(this.isVisible()){
@@ -127,6 +137,7 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
     @Override
     public void onBuysDataFailed() {
 
+        dataBaseChecked = true;
         hideLoading();
         recyclerAdapterSolicitations.clear();
         recyclerViewNewsSales.setVisibility(View.INVISIBLE);
@@ -134,8 +145,31 @@ public class NewsSales extends Fragment implements NewsSalesTasks.Presenter, Rec
 
     @Override
     public void onNoStore() {
+        dataBaseChecked = true;
         hideLoading();
         recyclerViewNewsSales.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSaleAdded(Buy buy) {
+
+        dataBaseChecked = true;
+        hideLoading();
+        recyclerAdapterSolicitations.addBuy(buy);
+    }
+
+    @Override
+    public void onSaleUpdate(Buy buy) {
+        dataBaseChecked = true;
+        hideLoading();
+        recyclerAdapterSolicitations.updateBuy(buy);
+    }
+
+    @Override
+    public void onSalesRemoved(Buy buy) {
+        dataBaseChecked = true;
+        hideLoading();
+        recyclerAdapterSolicitations.removeBuy(buy);
     }
 
     @Override

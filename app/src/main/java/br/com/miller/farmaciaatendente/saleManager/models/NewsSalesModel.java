@@ -84,36 +84,25 @@ public class NewsSalesModel {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            if(!buys.contains(dataSnapshot.getValue(Buy.class))){
-
-                buys.add(dataSnapshot.getValue(Buy.class));
-                model.onBuysDataSuccess(buys);
+            if(dataSnapshot.exists()){
+                model.onSaleAdded(dataSnapshot.getValue(Buy.class));
             }
-
-
         }
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-
+            if(dataSnapshot.exists()){
+                model.onSaleUpdate(dataSnapshot.getValue(Buy.class));
+            }
 
         }
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            if(dataSnapshot.exists()) {
-
-                for (int i = 0; i < buys.size(); i++) {
-
-                    if (buys.get(i).getId().equals(Objects.requireNonNull(dataSnapshot.getValue(Buy.class)).getId())) {
-                        buys.remove(i);
-                        break;
-                    }
-                }
-
-                model.onBuysDataSuccess(buys);
+            if(dataSnapshot.exists()){
+                model.onSalesRemoved(dataSnapshot.getValue(Buy.class));
             }
         }
 

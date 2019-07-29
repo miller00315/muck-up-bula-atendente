@@ -17,12 +17,18 @@ public interface ReceivedSalesTask {
         void onBuysDataSuccess(ArrayList<Buy> buys);
         void onBuysDataFailed();
         void onNoStore();
+        void onSaleAdded(Buy buy);
+        void onSaleUpdate(Buy buy);
+        void onSalesRemoved(Buy buy);
     }
 
     interface Model{
 
         void onBuysDataSuccess(ArrayList<Buy> buys);
         void onBuysDataFailed();
+        void onSaleAdded(Buy buy);
+        void onSaleUpdate(Buy buy);
+        void onSalesRemoved(Buy buy);
     }
 
 }

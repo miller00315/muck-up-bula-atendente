@@ -30,8 +30,7 @@ import br.com.miller.farmaciaatendente.utils.StringUtils;
 public class FirebaseJobs extends JobService {
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    public static final String ID = FirebaseJobs.class.getSimpleName();
-    private boolean foreground = true;
+    public static final String ID = FirebaseJobs.class.getName();
     private boolean isWorking = false;
     private boolean jobCancelled = false;
 
@@ -39,6 +38,8 @@ public class FirebaseJobs extends JobService {
     public boolean onStartJob(@NonNull JobParameters job) {
 
         isWorking = true;
+
+        jobCancelled = false;
 
         startWork(job);
 
@@ -55,7 +56,7 @@ public class FirebaseJobs extends JobService {
 
         jobFinished(params, isWorking);
 
-        return false;
+        return jobCancelled;
     }
 
     public void removeListener(JobParameters params){
@@ -95,8 +96,6 @@ public class FirebaseJobs extends JobService {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            Log.w("add", "add");
-
             if(dataSnapshot.exists()) {
 
                 if (!isAppOnForeground(getApplicationContext())) {
@@ -111,8 +110,7 @@ public class FirebaseJobs extends JobService {
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            if(dataSnapshot.exists())
-                Log.w("changed", dataSnapshot.toString());
+
         }
 
         @Override

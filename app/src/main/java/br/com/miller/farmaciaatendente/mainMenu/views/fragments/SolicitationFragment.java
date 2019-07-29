@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,8 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     private Button managerBuy;
     private RecyclerView recyclerView;
     private User user;
-    private RelativeLayout loadingLayout, mainLayout;
+    private RelativeLayout loadingLayout, mainLayout, emptyLayout;
+    private Boolean dataBaseChecked = false;
 
     public SolicitationFragment() { }
 
@@ -64,6 +66,7 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
         managerBuy = view.findViewById(R.id.manager_buy_button);
         loadingLayout = view.findViewById(R.id.layout_loading);
         mainLayout = view.findViewById(R.id.main_layout);
+        emptyLayout = view.findViewById(R.id.layout_empty);
 
         showLoading();
 
@@ -75,21 +78,40 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     private void showLoading(){
         loadingLayout.setVisibility(View.VISIBLE);
         mainLayout.setVisibility(View.INVISIBLE);
+        emptyLayout.setVisibility(View.INVISIBLE);
     }
 
     private void hideLoading(){
-        loadingLayout.setVisibility(View.INVISIBLE);
-        mainLayout.setVisibility(View.VISIBLE);
+
+        if(recyclerAdapterSolicitations.getItemCount() > 0 ) {
+            loadingLayout.setVisibility(View.INVISIBLE);
+            mainLayout.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.INVISIBLE);
+
+            Log.w("teste", "teste");
+        }else{
+            loadingLayout.setVisibility(View.INVISIBLE);
+            mainLayout.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.VISIBLE);
+
+            Log.w("teste", "lol");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(loadingLayout.getVisibility() == View.VISIBLE && dataBaseChecked)
+            hideLoading();
+        else
+            solicitationPresenter.temporaryVerify(user);
+
     }
 
     private void bindViews(){
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        if (loadingLayout.getVisibility() == View.VISIBLE){
-
-                solicitationPresenter.temporaryVerify(user);
-        }
 
         recyclerView.setHasFixedSize(true);
 
@@ -135,24 +157,49 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
 
     @Override
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
+        dataBaseChecked = true;
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerAdapterSolicitations.setBuys(buys);
 
-            hideLoading();
-            recyclerView.setVisibility(View.VISIBLE);
-            recyclerAdapterSolicitations.setBuys(buys);
+        hideLoading();
 
     }
 
     @Override
     public void onBuysDataFailed() {
-        hideLoading();
+        dataBaseChecked = true;
         recyclerView.setVisibility(View.INVISIBLE);
+        hideLoading();
     }
 
     @Override
     public void onNoStore() {
         Toast.makeText(getContext(), "Você não possui loja vinculada", Toast.LENGTH_SHORT).show();
+        dataBaseChecked = true;
+        recyclerView.setVisibility(View.INVISIBLE);
         hideLoading();
-        recyclerView.setVisibility(View.INVISIBLE);}
+    }
+
+    @Override
+    public void onSaleAdded(Buy buy) {
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.addBuy(buy);
+        hideLoading();
+    }
+
+    @Override
+    public void onSaleUpdate(Buy buy) {
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.updateBuy(buy);
+        hideLoading();
+    }
+
+    @Override
+    public void onSalesRemoved(Buy buy) {
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.removeBuy(buy);
+        hideLoading();
+    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Bundle bundle);

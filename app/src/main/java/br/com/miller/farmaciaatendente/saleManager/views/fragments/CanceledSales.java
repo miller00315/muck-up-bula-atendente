@@ -2,9 +2,11 @@ package br.com.miller.farmaciaatendente.saleManager.views.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     private User user;
     private ScrollView mainLayout;
     private RelativeLayout loadingLayout;
+    private Boolean dataBaseChecked = false;
 
     public CanceledSales() { }
 
@@ -79,11 +82,6 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
 
     private void bindViews(){
 
-        if(loadingLayout.getVisibility() == View.VISIBLE){
-
-            canceledSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
-        }
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         recyclerViewCanceledSales.setLayoutManager(linearLayoutManager);
@@ -105,6 +103,17 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        if(loadingLayout.getVisibility() == View.VISIBLE && dataBaseChecked)
+            hideLoading();
+        else
+            canceledSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -115,6 +124,7 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
         hideLoading();
+        dataBaseChecked = true;
 
         if(this.isVisible()){
 
@@ -126,13 +136,37 @@ public class CanceledSales extends Fragment implements CanceledSaleTask.Presente
     @Override
     public void onBuysDataFailed() {
         hideLoading();
+        dataBaseChecked = true;
         recyclerAdapterSolicitations.clear();
-        recyclerViewCanceledSales.setVisibility(View.INVISIBLE);}
+        recyclerViewCanceledSales.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public void onNoStore() {
         hideLoading();
+        dataBaseChecked = true;
         recyclerViewCanceledSales.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSaleAdded(Buy buy) {
+        hideLoading();
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.addBuy(buy);
+    }
+
+    @Override
+    public void onSaleUpdate(Buy buy) {
+        hideLoading();
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.updateBuy(buy);
+    }
+
+    @Override
+    public void onSalesRemoved(Buy buy) {
+        hideLoading();
+        dataBaseChecked = true;
+        recyclerAdapterSolicitations.removeBuy(buy);
     }
 
     @Override

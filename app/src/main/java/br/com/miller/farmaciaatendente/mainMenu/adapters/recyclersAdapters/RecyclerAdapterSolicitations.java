@@ -85,6 +85,38 @@ public class RecyclerAdapterSolicitations extends RecyclerItem {
         notifyDataSetChanged();
     }
 
+    public void removeBuy(Buy buy){
+
+           for (int i = 0; i < buys.size(); i++) {
+
+              if (buys.get(i).getId().equals(buy.getId())) {
+                  buys.remove(i);
+                  notifyItemRemoved(i);
+                  break;
+              }
+           }
+
+
+
+    }
+
+    public void updateBuy(Buy buy){
+
+        for (int i = 0; i < buys.size(); i++) {
+
+            if (buys.get(i).getId().equals(buy.getId())) {
+                buys.add(i, buy);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void addBuy(Buy buy){
+        buys.add(buy);
+
+        notifyDataSetChanged();
+    }
 
     public void setBuys(ArrayList<Buy> buys) {
 

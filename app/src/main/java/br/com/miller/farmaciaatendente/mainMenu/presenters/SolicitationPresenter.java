@@ -27,6 +27,15 @@ public class SolicitationPresenter implements SolicitationTasks.View, Solicitati
     public void onBuysDataFailed() { presenter.onBuysDataFailed(); }
 
     @Override
+    public void onSaleAdded(Buy buy) { presenter.onSaleAdded(buy); }
+
+    @Override
+    public void onSaleUpdate(Buy buy) { presenter.onSaleUpdate(buy); }
+
+    @Override
+    public void onSalesRemoved(Buy buy) { presenter.onSalesRemoved(buy);}
+
+    @Override
     public void getSolicitations(User user) {
 
         if(!user.getStoreId().isEmpty())

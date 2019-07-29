@@ -32,6 +32,7 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     private RecyclerView recyclerViewSendedSales;
     private ScrollView mainLayout;
     private RelativeLayout loadingLayout;
+    private Boolean dataBaseChecked = false;
 
     public SendedSales() {
         // Required empty public constructor
@@ -68,6 +69,17 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(loadingLayout.getVisibility() == View.VISIBLE && dataBaseChecked)
+            hideLoading();
+        else
+            sendedSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
+
+    }
+
     private void showLoading(){
         loadingLayout.setVisibility(View.VISIBLE);
         mainLayout.setVisibility(View.INVISIBLE);
@@ -79,10 +91,6 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     }
 
     private void bindViews(){
-
-        if(loadingLayout.getVisibility() == View.VISIBLE){
-            sendedSalesPresenter.temporaryVerify(user.getStoreId(), user.getCity());
-        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -114,6 +122,7 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
     public void onBuysDataSuccess(ArrayList<Buy> buys) {
 
         hideLoading();
+        dataBaseChecked = true;
 
         if(this.isVisible()){
 
@@ -125,15 +134,41 @@ public class SendedSales extends Fragment implements SendedSalesTasks.Presenter,
 
     @Override
     public void onBuysDataFailed() {
+        dataBaseChecked = true;
         hideLoading();
         recyclerViewSendedSales.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onNoStore() {
+        dataBaseChecked = true;
         hideLoading();
         recyclerViewSendedSales.setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void onSaleAdded(Buy buy) {
+        dataBaseChecked = true;
+
+        hideLoading();
+        recyclerAdapterSolicitations.addBuy(buy);
+
+    }
+
+    @Override
+    public void onSaleUpdate(Buy buy) {
+        dataBaseChecked = true;
+
+        hideLoading();
+
+        recyclerAdapterSolicitations.updateBuy(buy);
+    }
+
+    @Override
+    public void onSalesRemoved(Buy buy) {
+        dataBaseChecked = true;
+        hideLoading();
+        recyclerAdapterSolicitations.removeBuy(buy); }
 
     @Override
     public void onAdapterInteract(Bundle bundle) { mListener.onFragmentInteraction(bundle);}

@@ -75,20 +75,18 @@ public class ReceivedSalesModel {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            if(!buys.contains(dataSnapshot.getValue(Buy.class))){
+            if(dataSnapshot.exists()){
 
-                buys.add(dataSnapshot.getValue(Buy.class));
-                model.onBuysDataSuccess(buys);
+                model.onSaleAdded(dataSnapshot.getValue(Buy.class));
             }
         }
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            if(!buys.contains(dataSnapshot.getValue(Buy.class))){
+            if(dataSnapshot.exists()){
 
-                buys.add(dataSnapshot.getValue(Buy.class));
-                model.onBuysDataSuccess(buys);
+                model.onSaleUpdate(dataSnapshot.getValue(Buy.class));
             }
 
         }
@@ -98,15 +96,7 @@ public class ReceivedSalesModel {
 
             if(dataSnapshot.exists()) {
 
-                for (int i = 0; i < buys.size(); i++) {
-
-                    if (buys.get(i).getId().equals(Objects.requireNonNull(dataSnapshot.getValue(Buy.class)).getId())) {
-                        buys.remove(i);
-                        break;
-                    }
-                }
-
-                model.onBuysDataSuccess(buys);
+               model.onSalesRemoved(dataSnapshot.getValue(Buy.class));
             }
 
         }
