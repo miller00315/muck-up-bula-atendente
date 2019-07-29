@@ -264,10 +264,12 @@ public class MedicineManager extends AppCompatActivity implements
     public void onImageUploadFailed() { }
 
     @Override
-    public void newMedicine() { isNewMedicine = true; }
+    public void newMedicine() {
+        hideLoading();
+        isNewMedicine = true;
+    }
 
     public void save(View view) {
-
 
         AlertOptionsMedicineManager alertOptionsMedicineManager = AlertOptionsMedicineManager.newInstance(bundle);
 
