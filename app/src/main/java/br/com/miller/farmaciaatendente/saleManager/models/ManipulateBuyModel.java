@@ -30,6 +30,10 @@ public class ManipulateBuyModel {
         firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
+    public Buy getBuy() {
+        return buy;
+    }
+
     public void getBuy(final String city, final String storeId, final String buyId, String status){
 
         firebaseDatabase.getReference()

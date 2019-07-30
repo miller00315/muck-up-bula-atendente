@@ -30,7 +30,6 @@ import br.com.miller.farmaciaatendente.saleManager.tasks.ManipulateBuyTask;
 import br.com.miller.farmaciaatendente.superClass.RecyclerItem;
 import br.com.miller.farmaciaatendente.utils.StringUtils;
 import br.com.miller.farmaciaatendente.utils.alerts.EditTextDialogFragment;
-import br.com.miller.farmaciaatendente.utils.presenters.Permissions;
 
 public class ManipulateBuy extends AppCompatActivity implements
         ManipulateBuyTask.Presenter,
@@ -39,7 +38,7 @@ public class ManipulateBuy extends AppCompatActivity implements
 
     private Bundle bundle;
     private ManipulateBuyPresenter manipulateBuyPresenter;
-    private TextView payMode, observationClient, addressClient, clientName, totalValue, phoneCliente;
+    private TextView payMode, observationClient, addressClient, clientName, totalValue, phoneCliente, transshipment;
     private ManipulateBuyRecyclerAdapter manipulateBuyRecyclerAdapter;
     private RecyclerView recyclerViewManipulateBuy;
     private Button sendBuy, receiveBuy, cancelBuy;
@@ -67,6 +66,20 @@ public class ManipulateBuy extends AppCompatActivity implements
 
         bundle = getIntent().getBundleExtra("params");
 
+        payMode = findViewById(R.id.pay_mode);
+        clientName = findViewById(R.id.name_client);
+        addressClient = findViewById(R.id.address_client);
+        observationClient = findViewById(R.id.observation_client);
+        recyclerViewManipulateBuy = findViewById(R.id.recycler_view_manipulate_buys);
+        totalValue = findViewById(R.id.total_value);
+        sendBuy = findViewById(R.id.button_sended);
+        receiveBuy = findViewById(R.id.button_received);
+        cancelBuy = findViewById(R.id.button_cancel);
+        phoneCliente = findViewById(R.id.phone_client);
+        loadingLayout = findViewById(R.id.layout_loading);
+        mainLayout = findViewById(R.id.main_layout);
+        transshipment = findViewById(R.id.transshipment);
+
         bindViews();
     }
 
@@ -82,19 +95,6 @@ public class ManipulateBuy extends AppCompatActivity implements
 
 
     private void bindViews() {
-
-        payMode = findViewById(R.id.pay_mode);
-        clientName = findViewById(R.id.name_client);
-        addressClient = findViewById(R.id.address_client);
-        observationClient = findViewById(R.id.observation_client);
-        recyclerViewManipulateBuy = findViewById(R.id.recycler_view_manipulate_buys);
-        totalValue = findViewById(R.id.total_value);
-        sendBuy = findViewById(R.id.button_sended);
-        receiveBuy = findViewById(R.id.button_received);
-        cancelBuy = findViewById(R.id.button_cancel);
-        phoneCliente = findViewById(R.id.phone_client);
-        loadingLayout = findViewById(R.id.layout_loading);
-        mainLayout = findViewById(R.id.main_layout);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -161,19 +161,40 @@ public class ManipulateBuy extends AppCompatActivity implements
 
             hideLoading();
 
-            addressClient.setText(buy.getAddress());
+            addressClient.setText(buy.getAddress().concat(", ").concat(buy.getUserCity()));
             clientName.setText(buy.getUserName());
             observationClient.setText(buy.getObservations() != null ? buy.getObservations() : "");
             totalValue.setText(StringUtils.doubleToMonetaryString(buy.getTotalValue()));
             phoneCliente.setText(buy.getUserPhone() != null ? buy.getUserPhone() : "");
+            transshipment.setText(StringUtils.doubleToMonetaryString(buy.getTroco()));
 
             if (buy.getPayMode() == 1) {
 
-                payMode.setText("Dinheiro");
+                payMode.setText(getResources().getString(R.string.money));
+                payMode.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_notes,0);
 
             } else if (buy.getPayMode() == 2) {
 
-                payMode.setText("Cartão");
+                payMode.setText(getResources().getString(R.string.card));
+
+                switch (buy.getCardFlag()){
+                    case 1:
+
+                        payMode.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.master_card_logo,0);
+                        break;
+
+                    case(2):
+                        payMode.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.visa_logo,0);
+                        break;
+
+                    case 3:
+                        payMode.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.elo_logo,0);
+                        break;
+
+                        default:
+                            payMode.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_credit_card,0);
+                            break;
+                }
             }
 
             manipulateBuyRecyclerAdapter.setOffers(buy.getOffers());
@@ -225,14 +246,16 @@ public class ManipulateBuy extends AppCompatActivity implements
 
     @Override
     public void onBuyDataFailed() {
+
         hideLoading();
+        Toast.makeText(this, "Erro ao obter dados de compra", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void onChangeSucces(Buy buy) {
 
         hideLoading();
-
         Toast.makeText(this, "Compra atualizada com sucesso", Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -242,8 +265,6 @@ public class ManipulateBuy extends AppCompatActivity implements
         hideLoading();
         Toast.makeText(this, "Algum erro ocorreu, tente novamente", Toast.LENGTH_SHORT).show();
     }
-
-    ;
 
     public void sendBuy(View view) {
         showLoading();
@@ -276,9 +297,26 @@ public class ManipulateBuy extends AppCompatActivity implements
         intent.setData(Uri.parse("tel:".concat(phoneCliente.getText().toString())));
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Não temos permissão para acessa o telefone", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Não temos permissão para acessar o telefone", Toast.LENGTH_SHORT).show();
         }else {
             startActivity(intent);
+        }
+    }
+
+    public void goToMap(View view) {
+
+        Uri.Builder uriBuilder = new Uri.Builder()
+                .scheme("geo")
+                .path("0,0")
+                .appendQueryParameter("q", manipulateBuyPresenter.getBuy()
+                        .getAddress()
+                        .concat(", ")
+                        .concat(manipulateBuyPresenter.getBuy().getUserCity()));
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, uriBuilder.build());
+
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            this.startActivity(intent);
         }
     }
 }

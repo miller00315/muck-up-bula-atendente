@@ -132,7 +132,14 @@
 
                     <TextView
                         android:id="@+id/address_client"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit ="marquee_forever"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:scrollHorizontally="true"
                         android:textStyle="bold"
+                        android:onClick="goToMap"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -231,6 +238,37 @@
 
             </android.support.v7.widget.CardView>
 
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_troco"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Troco para"
+                        android:textColor="#000000"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/transshipment"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
             <Button
                 android:id="@+id/button_sended"
                 android:layout_marginTop="20dp"
@@ -268,6 +306,6 @@
 
     </ScrollView>
 
-    <include layout="@layout/layout_loading"/>
+    <include layout="@layout/layout_loading" />
 
 </RelativeLayout>

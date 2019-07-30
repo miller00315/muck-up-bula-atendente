@@ -36,4 +36,6 @@ public class ManipulateBuyPresenter implements ManipulateBuyTask.Model, Manipula
 
     @Override
     public void sendBuyToCanceled() { model.senBuyToCanceled(); }
+
+    public Buy getBuy(){ return model.getBuy(); }
 }
