@@ -78,7 +78,7 @@ public class DepartamentModel {
                 .child("storeDepartaments")
                 .child(departament.getCity())
                 .child(departament.getIdStore())
-                .setValue(map)
+                .updateChildren(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
