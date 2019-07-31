@@ -76,25 +76,25 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     }
 
     private void showLoading(){
-        loadingLayout.setVisibility(View.VISIBLE);
-        mainLayout.setVisibility(View.INVISIBLE);
-        emptyLayout.setVisibility(View.INVISIBLE);
+        if(this.isVisible()) {
+            loadingLayout.setVisibility(View.VISIBLE);
+            mainLayout.setVisibility(View.INVISIBLE);
+            emptyLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void hideLoading(){
 
-        if(recyclerAdapterSolicitations.getItemCount() > 0 ) {
-            loadingLayout.setVisibility(View.INVISIBLE);
-            mainLayout.setVisibility(View.VISIBLE);
-            emptyLayout.setVisibility(View.INVISIBLE);
-
-            Log.w("teste", "teste");
-        }else{
-            loadingLayout.setVisibility(View.INVISIBLE);
-            mainLayout.setVisibility(View.VISIBLE);
-            emptyLayout.setVisibility(View.VISIBLE);
-
-            Log.w("teste", "lol");
+        if(this.isVisible()){
+            if(recyclerAdapterSolicitations.getItemCount() > 0 ) {
+                loadingLayout.setVisibility(View.INVISIBLE);
+                mainLayout.setVisibility(View.VISIBLE);
+                emptyLayout.setVisibility(View.INVISIBLE);
+            }else{
+               loadingLayout.setVisibility(View.INVISIBLE);
+               mainLayout.setVisibility(View.VISIBLE);
+               emptyLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -176,7 +176,6 @@ public class SolicitationFragment extends Fragment implements SolicitationTasks.
     public void onNoStore() {
         Toast.makeText(getContext(), "Você não possui loja vinculada", Toast.LENGTH_SHORT).show();
         dataBaseChecked = true;
-        recyclerView.setVisibility(View.INVISIBLE);
         hideLoading();
     }
 

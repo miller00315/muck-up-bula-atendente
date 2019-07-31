@@ -59,7 +59,10 @@ public class SpinnerDialogFragment extends DialogFragment {
 
                 bundle.putParcelable("departament", (Departament) spinner.getSelectedItem());
 
+                if(spinnerDialogFragmentListener != null)
                 spinnerDialogFragmentListener.onSpinnerDialogFragment(bundle);
+                else
+                    Log.w("teste", "listener is null");
 
                 dismiss();
             }

@@ -76,7 +76,7 @@
     <string name="avaliacoes">Avaliações</string>
     <string name="default_notification_channel_id">default</string>
     <string name="channel_description">notification channel</string>
-    <string name="channel_name">notification channel</string>
+    <string name="channel_name">Bula</string>
     <string name="card">Cartão</string>
     <string name="money">Dinheiro</string>
 </resources>

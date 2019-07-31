@@ -38,20 +38,29 @@ public class DepartamentModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                ArrayList<Departament> departaments = new ArrayList<>();
+                if(dataSnapshot.exists()) {
+                    ArrayList<Departament> departaments = new ArrayList<>();
 
-                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
 
-                    departaments.add(new Departament(child.getValue()));
+                        Departament departament = new Departament(child.getValue());
 
+                        departament.setOffers(null);
+
+                        departaments.add(departament);
+
+                    }
+
+                  model.onDepartamentsAvailableSuccess(departaments);
+
+                }else{
+                    model.onDepartamentAvailablesFailed();
                 }
-
-                model.onDepartamentsItemSuccess(departaments);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                model.onDepartamentAvailablesFailed();
             }
         });
 

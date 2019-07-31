@@ -180,7 +180,7 @@ public class DepartamentManager extends AppCompatActivity implements
     @Override
     public void onMedicineDeleteFailed() {
         hideLoading();
-        Toast.makeText(this, "Erro ao excluir o medicamenot, tente novamente", Toast.LENGTH_SHORT).show(); }
+        Toast.makeText(this, "Erro ao excluir o medicamento, tente novamente", Toast.LENGTH_SHORT).show(); }
 
     @Override
     public void onDepublishSuccess(Offer offer) {

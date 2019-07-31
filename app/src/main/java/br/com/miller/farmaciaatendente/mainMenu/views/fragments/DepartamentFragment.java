@@ -74,13 +74,17 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
     }
 
     private void showLoading(){
-        loadingLayout.setVisibility(View.VISIBLE);
-        mainLayout.setVisibility(View.INVISIBLE);
+        if(this.isVisible()) {
+            loadingLayout.setVisibility(View.VISIBLE);
+            mainLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void hideLoading(){
-        loadingLayout.setVisibility(View.INVISIBLE);
-        mainLayout.setVisibility(View.VISIBLE);
+        if(this.isVisible()) {
+            loadingLayout.setVisibility(View.INVISIBLE);
+            mainLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void bindViews(){
@@ -115,7 +119,6 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
         if(!user.getStoreId().isEmpty())
             departamentPresenter.getDepartaments(user.getCity(), user.getStoreId());
         else {
-
             hideLoading();
             recyclerViewDepatament.setVisibility(View.INVISIBLE);
         }
@@ -158,7 +161,7 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
     }
 
     @Override
-    public void onDepartamentsAvaliablesuccess(ArrayList<Departament> departaments) {
+    public void onDepartamentsAvaliableSuccess(ArrayList<Departament> departaments) {
 
         Bundle bundle = new Bundle();
 
@@ -169,6 +172,9 @@ public class DepartamentFragment extends Fragment implements DepartamentTask.Pre
         spinnerDialogFragment.openDialog(getFragmentManager());
 
     }
+
+    @Override
+    public void onDepartamentAvailablesFailed() { Toast.makeText(getContext(), "Não encontramos departamentos disponíveis", Toast.LENGTH_SHORT).show();}
 
     @Override
     public void onDepartmentAddFailed() {

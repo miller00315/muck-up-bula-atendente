@@ -64,7 +64,7 @@ public class DepartamentManagerModel {
                     @Override
                     public void onSuccess(Void aVoid) {
                         model.onMedicineDeleteSucces(offer);
-                        deleteOffer(offer);
+                        depublishOffer(offer);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

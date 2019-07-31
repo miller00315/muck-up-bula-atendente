@@ -92,13 +92,17 @@ public class StorePerfilFragment extends Fragment implements StorePerfilTasks.Pr
     }
 
     private void showLoading(){
-        loadingLayout.setVisibility(View.VISIBLE);
-        mainLayout.setVisibility(View.INVISIBLE);
+        if(this.isVisible()) {
+            loadingLayout.setVisibility(View.VISIBLE);
+            mainLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void hideLoading(){
-        loadingLayout.setVisibility(View.INVISIBLE);
-        mainLayout.setVisibility(View.VISIBLE);
+        if(this.isVisible()) {
+            loadingLayout.setVisibility(View.INVISIBLE);
+            mainLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void bindViews(){

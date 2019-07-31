@@ -255,7 +255,7 @@ public class MedicineManager extends AppCompatActivity implements
     @Override
     public void onPublishMedicineFailed() {
         hideLoading();
-        Toast.makeText(this, "Erro ao publicar o medicamento, tente novament", Toast.LENGTH_SHORT).show(); }
+        Toast.makeText(this, "Erro ao publicar o medicamento, tente novamente", Toast.LENGTH_SHORT).show(); }
 
     @Override
     public void onImageDownloadFailed() { }

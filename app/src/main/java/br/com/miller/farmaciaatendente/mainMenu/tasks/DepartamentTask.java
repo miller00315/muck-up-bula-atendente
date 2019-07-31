@@ -15,14 +15,16 @@ public interface DepartamentTask {
     interface Presenter {
         void onDepartamentsSuccess(ArrayList<Departament> departaments);
         void onDepartamentsFailed();
-        void onDepartamentsAvaliablesuccess(ArrayList<Departament> departaments);
+        void onDepartamentsAvaliableSuccess(ArrayList<Departament> departaments);
+        void onDepartamentAvailablesFailed();
         void onDepartmentAddFailed();
     }
 
     interface Model{
         void onDepartamentSuccess(ArrayList<Departament> departaments);
         void onDepartamentFailed();
-        void onDepartamentsItemSuccess(ArrayList<Departament> departaments);
+        void onDepartamentAvailablesFailed();
+        void onDepartamentsAvailableSuccess(ArrayList<Departament> departaments);
         void onDepartmentAddFailed();
     }
 }

@@ -42,6 +42,7 @@ public class AdjustDataUser {
 
                             User user = dataSnapshot.getValue(User.class);
 
+
                             if(user != null) {
 
 

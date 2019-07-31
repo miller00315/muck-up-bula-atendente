@@ -24,7 +24,10 @@ public class DepartamentPresenter implements DepartamentTask.View, DepartamentTa
     public void onDepartamentFailed() { presenter.onDepartamentsFailed(); }
 
     @Override
-    public void onDepartamentsItemSuccess(ArrayList<Departament> departaments) { presenter.onDepartamentsAvaliablesuccess(departaments);}
+    public void onDepartamentAvailablesFailed() { presenter.onDepartamentsFailed();}
+
+    @Override
+    public void onDepartamentsAvailableSuccess(ArrayList<Departament> departaments) { presenter.onDepartamentsAvaliableSuccess(departaments);}
 
     @Override
     public void onDepartmentAddFailed() { presenter.onDepartmentAddFailed(); }
@@ -37,20 +40,23 @@ public class DepartamentPresenter implements DepartamentTask.View, DepartamentTa
 
         boolean flag = true;
 
-        for (Departament d : departaments){
+        if(departaments != null) {
+            for (Departament d : departaments) {
 
-            if(d.getId().equals(departament.getId())){
+                if (d.getId().equals(departament.getId())) {
 
-                flag = false;
+                    flag = false;
 
-                break;
+                    break;
+                }
             }
         }
 
-        if(flag)
-            model.addDepartament(departament, storeId);
-        else
-            presenter.onDepartmentAddFailed();
+            if (flag)
+                model.addDepartament(departament, storeId);
+            else
+                presenter.onDepartmentAddFailed();
+
     }
 
     @Override
