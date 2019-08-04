@@ -2,6 +2,7 @@ package br.com.miller.farmaciaatendente.mainMenu.presenters;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.util.Locale;
@@ -105,10 +106,8 @@ public class StorePerfilPresenter implements StorePerfilTasks.Model, StorePerfil
     @Override
     public void uploadImage(String type, String city, String image, Bitmap bitmap) {
 
-        String temp = "";
+        if(image.contains(".jpg")){ image = image.replace(".jpg", ""); }
 
-        if(image.contains(".jpg")){ temp = image.replace(".jpg", ""); }
-
-        storePerfilModel.uploadImage(type, city, temp, bitmap);
+        storePerfilModel.uploadImage(type, city, image, bitmap);
     }
 }

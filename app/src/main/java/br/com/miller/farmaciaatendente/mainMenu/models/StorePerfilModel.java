@@ -86,7 +86,9 @@ public class StorePerfilModel implements FirebaseImageTask.Model {
     }
 
     @Override
-    public void uploadImage(String type, String city, String image, Bitmap bitmap) { firebaseImageUtils.uploadImage(type, city, image, bitmap);}
+    public void uploadImage(String type, String city, String image, Bitmap bitmap) {
+        Log.wtf("test",image);
+        firebaseImageUtils.uploadImage(type, city, image, bitmap);}
 
     @Override
     public void downloadImage(String type, String city, String image) { firebaseImageUtils.downloadImage(type, city, image);}
