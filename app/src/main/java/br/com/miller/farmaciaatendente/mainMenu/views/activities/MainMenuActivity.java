@@ -175,6 +175,8 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
                 editTextDialogFragment.setListener(this);
                 editTextDialogFragment.openDialog(getSupportFragmentManager());
 
+                break;
+
             }
 
             case R.id.logout:{
@@ -190,8 +192,9 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuTasks
                 FirebaseAuth.getInstance().signOut();
 
                 finish();
-            }
 
+                break;
+            }
 
             default:
                 break;

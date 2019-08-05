@@ -43,7 +43,7 @@ public class AlertOptionsMedicineManager extends DialogFragment{
         TextView text = view.findViewById(R.id.textAlert);
 
         if(getArguments() != null)
-            text.setText("O que você deseja fazer com o produto");
+            text.setText(getResources().getString(R.string.alert_dialog_medicine_manager));
 
 
         fechar.setOnClickListener(new View.OnClickListener() {
